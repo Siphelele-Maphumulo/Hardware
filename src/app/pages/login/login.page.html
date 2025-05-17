@@ -1,0 +1,76 @@
+<ion-content class="home-background">
+  <div class="middle">
+    <div class="box">
+      <form #loginForm="ngForm">
+        <p class="login-header">Please login to your account</p>
+
+        <div class="glass-input">
+          <ion-item>
+            <ion-label position="floating">Email Address</ion-label>
+            <ion-input
+              type="email"
+              placeholder="Email"
+              id="username"
+              name="email"
+              #email="ngModel"
+              [(ngModel)]="user.username"
+              required
+              email
+            ></ion-input>
+            <ion-icon slot="end" name="mail"></ion-icon>
+          </ion-item>
+        </div>
+
+        <div class="glass-input">
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input
+              [type]="type ? 'password' : 'text'"
+              placeholder="Password"
+              id="password"
+              name="password"
+              #password="ngModel"
+              [(ngModel)]="user.password"
+              required
+            ></ion-input>
+            <ion-icon
+              slot="end"
+              name="eye"
+              (click)="changeType()"
+              class="password-toggle-icon"
+            ></ion-icon>
+          </ion-item>
+        </div>
+
+        <p id="forgetPassword" (click)="recover()">Forgot Password</p>
+
+        <div class="btn">
+          <ion-button
+            expand="block"
+            [disabled]="!loginForm.valid"
+            (click)="navigateWelcome()"
+            >LOGIN</ion-button
+          >
+        </div>
+      </form>
+
+      <div align="center">
+        <img src="../assets/img/lock2.gif" width="80" />
+        <div class="socialMedia">
+          <ion-icon name="logo-facebook"></ion-icon>
+          <ion-icon name="logo-twitter"></ion-icon>
+          <ion-icon name="logo-google"></ion-icon>
+        </div>
+      </div>
+
+      <div class="register-link">
+        <p (click)="register()">Click me to create an account</p>
+      </div>
+    </div>
+
+    <p id="login" class="app-footer">
+      HARDWARE STORE APP
+      <ion-icon name="construct"></ion-icon>
+    </p>
+  </div>
+</ion-content>

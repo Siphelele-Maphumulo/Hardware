@@ -1,0 +1,57 @@
+{
+    "status": "success",
+    "code": 1,
+    "message": "questions found",
+    "document": {
+        "pageno": 1,
+        "pagesize": 10,
+        "total_count": "10",
+        "records": [{
+                "prodID": "38",
+                "image": "006.jpg",
+                "title": "Generator",
+                "amount": 6000.00,
+                "catID": "002",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+            {
+                "prodID": "03",
+                "image": "hosse.webp",
+                "title": "Garden Hoose",
+                "amount": 1800.00,
+                "catID": "002",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+            {
+                "prodID": "04",
+                "image": "shopping (7).webp",
+                "title": "Electric Griller",
+                "amount": 700.00,
+                "catID": "002",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+            {
+                "prodID": "05",
+                "image": "hosse.webp",
+                "title": "Garden Hosse",
+                "amount": 1600.00,
+                "catID": "002",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+            {
+                "prodID": "06",
+                "image": "shopping.webp",
+                "title": "Pro Steel Steps",
+                "amount": 400.00,
+                "catID": "002",
+                "qty": 0,
+                "item_total_amt": 0
+            }
+
+        ]
+    }
+}

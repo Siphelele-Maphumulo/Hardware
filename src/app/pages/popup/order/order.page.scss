@@ -1,0 +1,177 @@
+:host {
+  ion-content {
+    --background: #f8f8ff;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  color: #777;
+  margin-top: 50%;
+  ion-icon {
+    font-size: 48px;
+    color: #ccc;
+    margin-bottom: 10px;
+  }
+  p {
+    font-size: 18px;
+  }
+}
+
+.order-card {
+  margin: 12px 0;
+  --background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  ion-item {
+    --inner-padding-end: 0;
+    --inner-padding-start: 0;
+  }
+
+  ion-thumbnail {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-right: 12px;
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .order-info {
+    h2 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      color: #333;
+    }
+    p {
+      margin: 2px 0;
+      font-size: 14px;
+      color: #555;
+    }
+    .order-status.confirmed {
+      color: green;
+      font-weight: bold;
+    }
+    .order-status.pending {
+      color: orange;
+      font-weight: bold;
+    }
+  }
+
+  ion-card-content {
+    padding: 8px 16px;
+
+    .edit-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+
+      .qty {
+        min-width: 24px;
+        text-align: center;
+        font-weight: 600;
+        color: #333;
+      }
+
+      ion-button {
+        --min-width: 32px;
+        --min-height: 32px;
+        --padding: 0;
+      }
+    }
+
+    .item-info {
+      font-size: 14px;
+      color: #666;
+    }
+  }
+}
+
+.more-items {
+  text-align: center;
+  color: #f15b3a;
+  font-weight: 600;
+  margin: 20px 0;
+  cursor: pointer;
+}
+
+.summary-wrapper {
+  background: linear-gradient(
+    to bottom,
+    #f0f0f0,
+    /* light top for gloss */ #d1d1d1 70%,
+    /* darker bottom for depth */
+  );
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 12px;
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.6),
+    /* glossy highlight */ 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 25px; /* rounded shape like a bottle */
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  /* Add a slight reflection for the bottle's curvature */
+  background-blend-mode: overlay;
+  /* Optional: add a shiny overlay for a glossy effect */
+  position: relative;
+}
+
+.summary-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
+  background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+/* List of items inside the scroll area */
+.items-list {
+  max-height: 130px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+}
+
+/* Each line in the summary */
+.order-item {
+  padding: 6px 0;
+  border-bottom: 1px dotted #ccc;
+  color: #333;
+  font-size: 14px;
+}
+
+/* Summary totals lines */
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  color: #333;
+  padding: 4px 0;
+  border-top: 1px solid #eee;
+}
+
+/* Fallback when empty */
+.order_summary.empty {
+  text-align: center;
+  color: #777;
+
+  h3 {
+    margin-bottom: 8px;
+    color: #f15b3a;
+  }
+}
+
+/* Checkout bar styling */
+.checkout-toolbar {
+  --padding-top: 6px;
+  --padding-bottom: 6px;
+}

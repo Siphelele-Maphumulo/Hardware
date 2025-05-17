@@ -1,0 +1,95 @@
+{
+    "status": "success",
+    "code": 1,
+    "message": "questions found",
+    "document": {
+        "pageno": 1,
+        "pagesize": 10,
+        "total_count": "10",
+        "records": [
+
+            {
+                "prodID": "110",
+                "image": "l004.webp",
+                "title": "Dulux - Maxi Cover 10L",
+                "amount": 999.00,
+                "catID": "004",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+            {
+                "prodID": "120",
+                "image": "Accubrush.webp",
+                "title": "Painters Accubrush Set",
+                "amount": 750.00,
+                "catID": "004",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+            {
+                "prodID": "130",
+                "image": "Coveralls .webp",
+                "title": "Disposable Coveralls and boots",
+                "amount": 250.00,
+                "catID": "004",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+            {
+                "prodID": "140",
+                "image": "Dulux PVA.webp",
+                "title": "Dulux PVA - 2L tin",
+                "amount": 350.00,
+                "catID": "004",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+            {
+                "prodID": "160",
+                "image": "Dulux.webp",
+                "title": "Dulux Weather Guard- White",
+                "amount": 1200.00,
+                "catID": "004",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+            {
+                "prodID": "200",
+                "image": "Duram .webp",
+                "title": "Duram Wall and Celling",
+                "amount": 845.00,
+                "catID": "004",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+            {
+                "prodID": "210",
+                "image": "Duram.webp",
+                "title": "Duram - Armatex",
+                "amount": 800.00,
+                "catID": "004",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+            {
+                "prodID": "230",
+                "image": "Roller.webp",
+                "title": "Roller Brush",
+                "amount": 180.00,
+                "catID": "004",
+                "qty": 0,
+                "item_total_amt": 0
+            },
+
+            {
+                "prodID": "26",
+                "image": "plascon.webp",
+                "title": "Plascon Wall & All 2L",
+                "amount": 600.00,
+                "catID": "004",
+                "qty": 0,
+                "item_total_amt": 0
+            }
+        ]
+    }
+}

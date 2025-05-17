@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button
+        color="light"
+        defaultHref="search-chef"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>Orders</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button fill="clear">
+        <ion-icon name="notifications" slot="icon-only"></ion-icon>
+        <ion-badge color="primary" class="badge-position">2</ion-badge>
+      </ion-button>
+
+      <ion-button fill="clear">
+        <ion-icon name="cart" slot="icon-only"></ion-icon>
+        <ion-badge color="primary" class="badge-position">5</ion-badge>
+      </ion-button>
+
+      <ion-avatar slot="end" class="profile-avatar">
+        <img src="../../../assets/img/Profile.png" />
+      </ion-avatar>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="top-segment">
+    <ion-segment value="Current">
+      <ion-segment-button value="Current">
+        <ion-label>Current</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="Past orders">
+        <ion-label>Past Orders</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div *ngFor="let order of orders">
+    <p class="order-date">{{ order.date }}</p>
+
+    <div class="order-box" *ngFor="let Singleorder of order.order">
+      <div class="order-image">
+        <img src="../assets/tools/{{Singleorder.image}}" />
+      </div>
+
+      <div class="order-info">
+        <div class="order-title">
+          <h3>{{ Singleorder.title }}</h3>
+          <ion-icon
+            name="ellipsis-vertical-outline"
+            (click)="presentPopover($event)"
+          ></ion-icon>
+        </div>
+
+        <p class="order-id">Order ID: #{{ Singleorder.transId }}</p>
+
+        <div class="order-amount-status">
+          <h3>R{{ Singleorder.amount }}</h3>
+          <p
+            [ngStyle]="{
+                'color': Singleorder.status === 'CONFIRM' ? 'green' : 'red',
+                'background': Singleorder.status === 'CONFIRM' ? '#e4f4eb' : '#f7d0c7'
+              }"
+          >
+            {{ Singleorder.status }}
+          </p>
+        </div>
+
+        <div class="order-actions">
+          <button class="record-btn" type="submit">Record</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

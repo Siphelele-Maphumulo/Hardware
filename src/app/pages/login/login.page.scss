@@ -1,0 +1,232 @@
+.home-background {
+  --background: url("/assets/img/bckgrd.jpg") no-repeat center center / cover;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 50%
+  );
+  z-index: 0;
+}
+
+.middle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.box {
+  width: 90%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.534);
+  padding: 2rem;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+    0 0 30px rgba(255, 255, 255, 0.3) inset;
+  position: relative;
+  overflow: hidden;
+}
+
+.box::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.4) 45%,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(30deg);
+  animation: shine 6s infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(30deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(30deg);
+  }
+}
+
+.login-header {
+  font-weight: 600;
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.glass-input ion-item {
+  --background: rgba(255, 255, 255, 0.438);
+  --highlight-color-focused: rgba(56, 128, 255, 0.4);
+  --border-color: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 0 12px;
+  margin-bottom: 1.2rem;
+  --color: #333;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.glass-input ion-item:hover {
+  --background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.glass-input ion-label {
+  color: #555;
+  font-weight: 500;
+}
+
+.glass-input ion-input {
+  --color: #333;
+  --padding-end: 8px;
+}
+
+.glass-input ion-icon {
+  color: #555;
+  transition: all 0.3s ease;
+}
+
+.glass-input ion-item.item-has-focus ion-icon {
+  color: #3880ff;
+}
+
+.password-toggle-icon {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.password-toggle-icon:hover {
+  transform: scale(1.1);
+  color: #3880ff;
+}
+
+#forgetPassword {
+  color: #3880ff;
+  cursor: pointer;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 500;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+#forgetPassword:hover {
+  text-decoration: underline;
+  color: #2a62c4;
+}
+
+.btn {
+  margin-top: 1.8rem;
+}
+
+.btn ion-button {
+  --border-radius: 10px;
+  --box-shadow: 0 4px 12px rgba(56, 128, 255, 0.3);
+  --transition: all 0.3s ease;
+  height: 48px;
+  font-weight: 600;
+}
+
+.btn ion-button:hover {
+  --box-shadow: 0 6px 16px rgba(56, 128, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.socialMedia {
+  margin: 1.5rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.socialMedia ion-icon {
+  font-size: 28px;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.5));
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.socialMedia ion-icon:hover {
+  transform: translateY(-3px) scale(1.1);
+  color: #3880ff;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 8px rgba(56, 128, 255, 0.2);
+}
+
+.register-link p {
+  text-align: center;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  color: #3880ff;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.register-link p:hover {
+  text-decoration: underline;
+  color: #2a62c4;
+}
+
+.app-footer {
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  margin-top: 2rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  font-size: 18px;
+}
+
+.app-footer ion-icon {
+  vertical-align: middle;
+  margin-left: 8px;
+  color: #ffc409;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+}
+
+/* Lock image styling */
+.middle img {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  transition: all 0.5s ease;
+  margin-bottom: 1rem;
+}
+
+.middle img:hover {
+  transform: rotate(-10deg) scale(1.05);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+}

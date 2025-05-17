@@ -1,0 +1,43 @@
+<ion-header lines="none" *ngIf="customers" class="glass-header">
+  <div class="header-content">
+    <p class="sFont">
+      <ion-icon name="person" class="profile-icon"></ion-icon>
+      <span class="customer-name">{{ customers.name }}</span>
+      <ion-icon
+        (click)="navigateOut()"
+        name="log-out-outline"
+        class="logout-icon"
+      ></ion-icon>
+    </p>
+  </div>
+</ion-header>
+
+<ion-content class="glass-content">
+  <div class="image-container">
+    <img src="../../../assets/img/wallpaperr.jpg" class="wallpaper-image" />
+  </div>
+</ion-content>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom" class="glass-tab-bar">
+    <ion-tab-button tab="profile" class="glass-tab-button">
+      <ion-icon name="person" class="tab-icon"></ion-icon>
+      <ion-label class="tab-label">Profile</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button (click)="navigateWelcome()" class="glass-tab-button">
+      <ion-icon name="cash-outline" class="tab-icon"></ion-icon>
+      <ion-label class="tab-label">Buy</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button (click)="navigateQoute()" class="glass-tab-button">
+      <ion-icon name="cart-outline" class="tab-icon"></ion-icon>
+      <ion-label class="tab-label">Cart</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="settings" class="glass-tab-button">
+      <ion-icon name="settings" class="tab-icon"></ion-icon>
+      <ion-label class="tab-label">Settings</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
