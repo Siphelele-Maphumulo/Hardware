@@ -117,24 +117,36 @@
   <!-- Always-visible checkout toolbar -->
   <ion-toolbar color="dark" class="checkout-toolbar">
     <ion-row class="ion-align-items-center">
-      <ion-col size="7">
+      <ion-col size="6">
         <ion-text color="light">
           <h4>Total: R{{ total_amt | number:'1.2-2' }}</h4>
         </ion-text>
       </ion-col>
+
+      <!-- Clear Cart Button with Red X -->
+      <ion-col size="1" class="ion-text-center">
+        <ion-button
+          fill="clear"
+          size="small"
+          color="danger"
+          (click)="presentAlert()"
+          *ngIf="total_amt > 0"
+          style="font-size: 18px"
+        >
+          <ion-icon name="close-circle" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+
+      <!-- Cart Navigation -->
       <ion-col size="5" class="ion-text-right">
         <ion-button
           fill="clear"
           size="small"
           [disabled]="total_amt === 0"
           (click)="goToCart()"
-          style="
-            color: rgb(255, 255, 255);
-            padding-right: 30%;
-            font-weight: bolder;
-          "
+          style="color: #fff; font-weight: bolder"
         >
-          cart
+          cart------
           <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
         </ion-button>
       </ion-col>

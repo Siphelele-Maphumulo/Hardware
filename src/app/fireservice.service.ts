@@ -3,6 +3,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
 
 export interface CartItem {
   id: number;
@@ -21,7 +22,9 @@ export class FireserviceService {
 
   constructor(
     public firestore: AngularFirestore,
-    public auth: AngularFireAuth
+    public auth: AngularFireAuth,
+    private fns: AngularFireFunctions,
+    private afs: AngularFirestore
   ) {}
 
   // Login with email and password
@@ -208,5 +211,23 @@ export class FireserviceService {
         items.reduce((sum, item) => sum + item.price * item.quantity, 0)
       )
     );
+  }
+
+  // Trigger cloud function to send email
+  sendReceiptEmail(email: string, receipt: any) {
+    return fetch(
+      'https://us-central1-harware-8f5e9.cloudfunctions.net/sendReceiptEmail',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, ...receipt }),
+      }
+    );
+  }
+
+  saveReceipt(receipt: any) {
+    return this.afs.collection('receipts').doc(receipt.id).set(receipt);
   }
 }

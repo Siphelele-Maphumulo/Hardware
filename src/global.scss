@@ -5,8 +5,8 @@
  * the entire app and not just one component. Additionally, this file can be
  * used as an entry point to import other CSS/Sass files to be included in the
  * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
+ * For more information on global stylesheets, visit:
+ * https://ionicframework.com/docs/layout/global-stylesheets 
  */
 
 /* Core CSS required for Ionic components to work properly */
@@ -18,19 +18,45 @@
 @import "~@ionic/angular/css/typography.css";
 @import "~@ionic/angular/css/display.css";
 
-/* Optional CSS utils that can be commented out */
+/* Optional CSS utils (can be commented out if unused) */
 @import "~@ionic/angular/css/padding.css";
 @import "~@ionic/angular/css/float-elements.css";
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+/* ==========================================================================
+   🎨 Light Theme Overrides
+   ========================================================================== */
+
+/* Set background color to white for the entire app */
+body {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+ion-content {
+  --background: #ffffff;
+}
+
+ion-toolbar {
+  --background: #ffffff;
+  --color: #000000;
+}
+
+.card {
+  background-color: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal Styling */
 .cart-modal {
   --width: 90%;
   --max-width: 500px;
   --height: 80%;
   --border-radius: 16px;
   --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  --background: #ffffff;
 
   ion-content {
     --background: #f5f5f5;
@@ -41,29 +67,91 @@
     overflow: hidden;
   }
 }
-/* Set background color to white for the entire app */
-body {
-  background-color: #ffffff !important; /* Set background to white */
-  color: #000000 !important; /* Set text color to black for better contrast */
-}
 
-ion-content {
-  --background: #ffffff; /* Set background color for all ion-content areas to white */
-}
-
-/* Optionally, update ion-toolbar if you want it to have a white background */
-ion-toolbar {
-  --background: #ffffff; /* White background for toolbar */
-  --color: #000000; /* Black text for the toolbar */
-}
-
-/* Optional: Adjust card or other component styles to fit the new background */
-.card {
-  background-color: #ffffff;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for better visibility */
-}
-
-/* Ensure modal background is also white */
-.cart-modal {
+/* Alert Styling */
+.alert-custom-style {
   --background: #ffffff;
+  --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  --border-radius: 16px;
+
+  .alert-wrapper {
+    text-align: center; /* Centers title and subtitle */
+  }
+
+  .alert-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e63946;
+    text-align: center;
+    margin-bottom: 0.25em;
+  }
+
+  .alert-sub-title {
+    color: #555;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+
+  .alert-message {
+    color: #333;
+    font-size: 0.95rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  ion-button.alert-button-delete,
+  ion-button.alert-button-cancel {
+    --background: rgba(255, 255, 255, 0.2);
+    --background-hover: rgba(255, 255, 255, 0.3);
+    --background-activated: rgba(255, 255, 255, 0.25);
+    --border-radius: 10px;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    height: 36px;
+    width: 48%;
+    margin: 8px auto; /* center button */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  ion-button.alert-button-delete:hover,
+  ion-button.alert-button-cancel:hover {
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+  }
+
+  ion-button.alert-button-delete ion-icon,
+  ion-button.alert-button-cancel ion-icon {
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+}
+
+@media print {
+  ion-header,
+  ion-footer,
+  ion-button {
+    display: none !important;
+  }
+  .receipt-container {
+    box-shadow: none;
+  }
 }

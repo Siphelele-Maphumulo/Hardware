@@ -3,6 +3,7 @@ import {
   LoadingController,
   ModalController,
   AlertController,
+  ToastController,
 } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -32,7 +33,8 @@ export class OrderPage implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private fireService: FireserviceService,
-    private cartService: CartService
+    private cartService: CartService,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -77,7 +79,7 @@ export class OrderPage implements OnInit, OnDestroy {
   }
 
   goToCart() {
-    this.router.navigate(['/cart']);
+    this.router.navigate(['/cart'], { queryParams: { from: 'orders' } });
   }
 
   updateCartDetails() {
@@ -159,6 +161,63 @@ export class OrderPage implements OnInit, OnDestroy {
     await alert.present();
     this.modalCtrl.dismiss().catch(() => console.warn('No modal to dismiss'));
     this.cartService.clearCart();
+  }
+
+  clearCart() {
+    this.cartService.clearCart(); // Clear cart from service/storage
+    this.total_amt = 0;
+    this.totalItems = 0;
+    this.orderSummary = [];
+
+    // Reset quantities in the orders array (if any were added)
+    this.orders = this.orders.map((order) => ({
+      ...order,
+      qty: 0,
+      qtyLeft: order.qtyLeft ?? order.stock ?? order.qty,
+    }));
+
+    this.cdr.detectChanges(); // Ensure UI updates
+  }
+  async presentAlert() {
+    const alert = await this.alertCtrl.create({
+      header: 'Clear Cart',
+      // subHeader: 'Whoa there!',
+      message: 'Are you sure you want to clear your cart?',
+      animated: true,
+      cssClass: 'alert-custom-style',
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'alert-button-cancel',
+          handler: () => {
+            console.log('Cart remains safe!');
+          },
+        },
+        {
+          text: 'Clear',
+          cssClass: 'alert-button-delete',
+          handler: () => {
+            this.clearCart();
+            this.showToast('Cart cleared successfully 🛒');
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async showToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+      color: 'danger',
+      icon: 'trash-outline',
+    });
+    await toast.present();
   }
 
   goBack() {

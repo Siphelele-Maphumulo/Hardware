@@ -69,11 +69,9 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'checkout',
+    path: 'receipt',
     loadChildren: () =>
-      import('./pages/checkout/checkout.module').then(
-        (m) => m.CheckoutPageModule
-      ),
+      import('./pages/receipt/receipt.module').then((m) => m.ReceiptPageModule),
   },
 ];
 

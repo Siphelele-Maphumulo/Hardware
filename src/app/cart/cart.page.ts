@@ -57,6 +57,6 @@ export class CartPage implements OnInit {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate(['/order']);
   }
 }
