@@ -1,43 +1,54 @@
 <ion-content>
-    <div class="upper">
-        <div class="icon">
-            <ion-icon name="construct"></ion-icon>
-        </div>
+  <div class="upper">
+    <div class="icon">
+      <ion-icon name="construct"></ion-icon>
     </div>
+  </div>
 
-    <div class="middle">
-        <div class="box">
-            <form #loginForm="ngForm">
-                <p>Reset Your Password</p>
+  <div class="middle">
+    <div class="box">
+      <form #loginForm="ngForm">
+        <p>Reset Your Password</p>
 
-                <ion-item>
-                    <ion-label position="floating">Email Address</ion-label>
-                    <ion-input type="email" Placeholder="Email" id="email" name="email" #email="ngModel" [(ngModel)]="user.username" required email></ion-input>
-                    <ion-icon class="ion-align-self-center" slot="end" name="mail"></ion-icon>
-                </ion-item>
+        <ion-item>
+          <ion-label position="floating">Email Address</ion-label>
+          <ion-input
+            type="email"
+            Placeholder="Email"
+            id="email"
+            name="email"
+            #email="ngModel"
+            [(ngModel)]="user.username"
+            required
+            email
+          ></ion-input>
+          <ion-icon
+            class="ion-align-self-center"
+            slot="end"
+            name="mail"
+          ></ion-icon>
+        </ion-item>
 
-                <div class="btn">
-                    <ion-button (click)="recovery()">Reset</ion-button>
-                </div>
-
-            </form>
-            <div align="center">
-                <img src="../assets/img/lock2.gif" />
-                <div class="socialMedia">
-                    <ion-icon slot="end" name="logo-facebook"></ion-icon>
-                    <ion-icon slot="end" name="logo-twitter"></ion-icon>
-                    <ion-icon slot="end" name="logo-google"></ion-icon>
-                </div>
-            </div>
-            <div>
-                <p (click)="register()">Click me to create an account</p>
-            </div>
+        <div class="btn">
+          <ion-button (click)="recovery()">Reset</ion-button>
         </div>
+      </form>
+      <div align="center">
+        <img
+          src="https://github.com/Siphelele-Maphumulo/Hardware/blob/main/docs/assets/img/lock2.gif?raw=true"
+        />
+        <div class="socialMedia">
+          <ion-icon slot="end" name="logo-facebook"></ion-icon>
+          <ion-icon slot="end" name="logo-twitter"></ion-icon>
+          <ion-icon slot="end" name="logo-google"></ion-icon>
+        </div>
+      </div>
+      <div>
+        <p (click)="register()">Click me to create an account</p>
+      </div>
     </div>
+  </div>
 </ion-content>
-
-
-
 
 <!--<ion-content>
   <div class="upper">
