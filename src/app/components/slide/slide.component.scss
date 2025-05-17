@@ -1,0 +1,112 @@
+/* Base layout */
+.slider-container {
+  --background: #ffffff;
+  height: 100vh;
+  position: relative;
+}
+
+.main-slides {
+  height: calc(100% - 80px); /* Space for button */
+  width: 100%;
+}
+
+/* Slide structure */
+.slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+
+  .slide-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Image grid for two equal-sized images */
+.image-grid {
+  display: grid;
+  grid-template-rows: 1fr 1fr; /* Two equal rows */
+  gap: 8px;
+  height: 100%;
+  width: 100%;
+  margin-top: 16px;
+  flex-grow: 1;
+
+  .grid-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
+/* Full-size image for other slides */
+.full-image {
+  width: 100%;
+  height: 100%;
+  max-height: calc(100% - 60px);
+  object-fit: contain;
+  margin-top: auto;
+}
+
+/* Text styles */
+.welcome-heading {
+  color: #f15b3a;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+.slide-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+/* Color classes */
+.red {
+  color: #fa3411;
+}
+.blue {
+  color: #313abd;
+}
+.yellow {
+  color: #f3e51a;
+}
+.green {
+  color: #5cdd11;
+}
+.gray {
+  color: #626b6b;
+}
+.orange {
+  color: #f89d14;
+}
+.lightblue {
+  color: #3dc2ff;
+}
+
+/* Pager styling */
+.swiper-pagination {
+  bottom: 80px !important;
+
+  &-bullet {
+    background: var(--ion-color-primary);
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* Safe area for notched devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .main-slides {
+    height: calc(100% - (80px + env(safe-area-inset-bottom)));
+  }
+}

@@ -1,0 +1,143 @@
+<ion-header>
+  <ion-toolbar color="shade">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="search-chef" color="dark"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Make Orders</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <ion-badge color="primary">{{ notifications }}</ion-badge>
+      </ion-button>
+      <ion-avatar>
+        <img src="../../../assets/img/Profile.png" />
+      </ion-avatar>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<!-- Floating Cart Button -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="goToCart()" [disabled]="totalItems === 0">
+    <ion-icon name="cart-outline"></ion-icon>
+    <ion-badge color="success">{{ totalItems }}</ion-badge>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-content class="ion-padding">
+  <ion-list *ngIf="orders.length > 0; else noOrders">
+    <ion-card *ngFor="let order of orders; let i = index" class="order-card">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img [src]="order.image" alt="{{ order.title }}" />
+        </ion-thumbnail>
+        <ion-label class="order-info">
+          <h2>{{ order.title }}</h2>
+          <p class="order-id">ID: {{ order.prodID }}</p>
+          <p class="order-amount">R{{ order.amount | number:'1.2-2' }}</p>
+          <p
+            class="order-status"
+            [ngClass]="order.status === 'CONFIRMED' ? 'confirmed' : 'pending'"
+          >
+            {{ order.status }}
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-card-content>
+        <div class="edit-controls">
+          <ion-button fill="outline" size="small" (click)="remove(i)">
+            <ion-icon slot="icon-only" name="remove-outline"></ion-icon>
+          </ion-button>
+          <span class="qty">{{ order.qty }}</span>
+          <ion-button fill="outline" size="small" (click)="add(i)">
+            <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+          </ion-button>
+          <ion-button
+            fill="clear"
+            color="danger"
+            size="small"
+            (click)="deleteItem(order.prodID)"
+          >
+            <ion-icon slot="icon-only" name="eye-off"></ion-icon>
+          </ion-button>
+        </div>
+        <p class="item-info">
+          Price: R{{ order.amount | number:'1.2-2' }} &bull; Left: {{
+          order.qtyLeft }}
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <ng-template #noOrders>
+    <div class="empty-state">
+      <ion-icon name="cart-outline" size="large"></ion-icon>
+      <p>No orders to display.</p>
+    </div>
+  </ng-template>
+
+  <p class="more-items">No more items</p>
+</ion-content>
+
+<ion-footer>
+  <!-- Scrollable summary container -->
+  <div class="summary-wrapper">
+    <!-- If there are items in the summary, show them -->
+    <div class="order_summary" *ngIf="orderSummary.length > 0; else noItems">
+      <h3>Order Summary</h3>
+      <div class="items-list">
+        <div *ngFor="let item of orderSummary" class="order-item">
+          {{ item.name }} — Qty: {{ item.quantity }} — R{{ (item.price *
+          item.quantity) | number:'1.2-2' }}
+        </div>
+      </div>
+      <div class="summary-line">
+        <span>Sub Total:</span>
+        <span>R{{ total_amt | number:'1.2-2' }}</span>
+      </div>
+      <div class="summary-line">
+        <span>VAT Included:</span>
+        <span>R{{ (total_amt * 15/115) | number:'1.2-2' }}</span>
+      </div>
+      <div class="summary-line">
+        <span>Delivery:</span>
+        <span>Free</span>
+      </div>
+    </div>
+
+    <!-- Fallback when there are no items -->
+    <ng-template #noItems>
+      <div class="order_summary empty">
+        <h3>Order Summary</h3>
+        <p>No items selected.</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Always-visible checkout toolbar -->
+  <ion-toolbar color="dark" class="checkout-toolbar">
+    <ion-row class="ion-align-items-center">
+      <ion-col size="7">
+        <ion-text color="light">
+          <h4>Total: R{{ total_amt | number:'1.2-2' }}</h4>
+        </ion-text>
+      </ion-col>
+      <ion-col size="5" class="ion-text-right">
+        <ion-button
+          fill="clear"
+          size="small"
+          [disabled]="total_amt === 0"
+          (click)="goToCart()"
+          style="
+            color: rgb(255, 255, 255);
+            padding-right: 30%;
+            font-weight: bolder;
+          "
+        >
+          cart
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,160 @@
+ion-header {
+  ion-toolbar {
+    --background: var(--ion-color-danger);
+    ion-title {
+      color: white;
+      font-weight: bold;
+    }
+
+    ion-icon {
+      font-size: 24px;
+      color: white;
+    }
+
+    .badge-position {
+      position: absolute;
+      top: 5px;
+      right: 0;
+      font-size: 10px;
+      z-index: 10;
+    }
+
+    .profile-avatar {
+      width: 35px;
+      height: 35px;
+      margin-left: 10px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+ion-content {
+  --background: #f9f9f9;
+
+  .top-segment {
+    padding: 10px;
+    ion-segment {
+      border: 1px solid #22eeca;
+      ion-segment-button {
+        --background-checked: #22eeca;
+        --color-checked: #fff;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .order-date {
+    padding: 10px 20px;
+    color: #888;
+    font-weight: bold;
+  }
+
+  .order-box {
+    background: white;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 6px;
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .order-image img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  .order-info {
+    flex: 1;
+
+    .order-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #f15b3a;
+
+      h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      ion-icon {
+        font-size: 18px;
+        color: #888;
+      }
+    }
+
+    .order-id {
+      font-size: 13px;
+      color: #666;
+      margin: 4px 0;
+    }
+
+    .order-amount-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h3 {
+        margin: 0;
+        color: #333;
+        font-size: 16px;
+      }
+
+      p {
+        font-size: 13px;
+        padding: 5px 10px;
+        border-radius: 4px;
+        margin: 0;
+        text-align: center;
+      }
+    }
+
+    .order-actions {
+      margin-top: 10px;
+
+      .record-btn {
+        background: #f15b3a;
+        color: white;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  // Optional: quantity controls
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+
+    button {
+      background: none;
+      border: 1px solid #f15b3a;
+      color: #f15b3a; // Text color for + and -
+      font-size: 18px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .quantity {
+      font-weight: bold;
+      font-size: 16px;
+      color: #333;
+    }
+  }
+}

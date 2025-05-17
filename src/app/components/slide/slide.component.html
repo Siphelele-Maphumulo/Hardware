@@ -1,0 +1,62 @@
+<ion-content [fullscreen]="true" class="slider-container">
+  <ion-slides pager="true" [options]="slideOpts" class="main-slides">
+    <!-- Slide 1: Welcome -->
+    <ion-slide class="slide">
+      <div class="slide-content">
+        <h1 class="welcome-heading">
+          <span class="red">WEL</span><span class="blue">COME</span> TO
+          <span class="yellow">SI</span><span class="green">YESHE</span>
+          <span class="gray">HARDWARE</span>
+        </h1>
+
+        <div class="image-grid">
+          <img
+            class="grid-image"
+            src="assets/img/Siyeshe.gif"
+            alt="Siyeshe Logo"
+          />
+          <img
+            class="grid-image"
+            src="assets/img/Sye.gif"
+            alt="Hardware Products"
+          />
+        </div>
+      </div>
+    </ion-slide>
+
+    <!-- Slide 2: Profile -->
+    <ion-slide class="slide">
+      <div class="slide-content">
+        <h1 class="slide-title red">Create a Store Profile</h1>
+        <img
+          class="full-image"
+          src="assets/img/profile.gif"
+          alt="Create Profile"
+        />
+      </div>
+    </ion-slide>
+
+    <!-- Slide 3: Order Online -->
+    <ion-slide class="slide">
+      <div class="slide-content">
+        <h1 class="slide-title orange">Order Online Now!</h1>
+        <h2 class="slide-subtitle">Have everything delivered to your door!</h2>
+        <img
+          class="full-image"
+          src="assets/img/online.gif"
+          alt="Online Order"
+        />
+      </div>
+    </ion-slide>
+
+    <!-- Slide 4: App Features -->
+    <ion-slide class="slide">
+      <div class="slide-content">
+        <h1 class="slide-title blue">Fast and Easy With Our New App</h1>
+        <img class="full-image" src="assets/img/order.gif" alt="App Features" />
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+  <app-start></app-start>
+</ion-content>

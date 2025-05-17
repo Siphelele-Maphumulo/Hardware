@@ -1,0 +1,102 @@
+<ion-content class="signup-content">
+  <div class="signup-wrapper">
+    <div class="signup-box">
+      <form #loginForm="ngForm" (ngSubmit)="navigateDetails()" novalidate>
+        <h2 class="form-title">Create an Account</h2>
+
+        <ion-item>
+          <ion-label position="floating">First Name</ion-label>
+          <ion-input
+            type="text"
+            name="name"
+            [(ngModel)]="user.name"
+            required
+          ></ion-input>
+          <ion-icon slot="end" name="person"></ion-icon>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Surname</ion-label>
+          <ion-input
+            type="text"
+            name="surname"
+            [(ngModel)]="user.surname"
+            required
+          ></ion-input>
+          <ion-icon slot="end" name="person"></ion-icon>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Username</ion-label>
+          <ion-input
+            type="text"
+            name="username"
+            [(ngModel)]="user.username"
+            required
+          ></ion-input>
+          <ion-icon slot="end" name="person-circle"></ion-icon>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Contact</ion-label>
+          <ion-input
+            type="tel"
+            name="contact"
+            [(ngModel)]="user.contact"
+            required
+          ></ion-input>
+          <ion-icon slot="end" name="call"></ion-icon>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input
+            type="email"
+            name="email"
+            [(ngModel)]="user.email"
+            required
+          ></ion-input>
+          <ion-icon slot="end" name="mail"></ion-icon>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input
+            [type]="type ? 'password' : 'text'"
+            name="password"
+            [(ngModel)]="user.password"
+            required
+          ></ion-input>
+          <ion-icon slot="end" name="eye" (click)="changeType()"></ion-icon>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Confirm Password</ion-label>
+          <ion-input
+            [type]="type ? 'password' : 'text'"
+            name="cPassword"
+            [(ngModel)]="user.cPass"
+            required
+          ></ion-input>
+          <ion-icon slot="end" name="eye" (click)="changeType()"></ion-icon>
+        </ion-item>
+
+        <ion-button expand="block" type="submit" [disabled]="loginForm.invalid"
+          >Sign Up</ion-button
+        >
+
+        <p class="login-link" (click)="goToLogin()">
+          Already have an account? Log in
+        </p>
+      </form>
+
+      <div class="signup-media">
+        <img src="../assets/img/login (2).gif" alt="Signup animation" />
+      </div>
+    </div>
+
+    <footer class="app-footer">
+      <p>HARDWARE STORE APP <ion-icon name="construct"></ion-icon></p>
+    </footer>
+  </div>
+</ion-content>

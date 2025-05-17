@@ -1,0 +1,71 @@
+<!-- checkout.page.html -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/cart"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Payments</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="checkout-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title style="text-align: center"
+          >Items Purchased</ion-card-title
+        >
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list lines="none">
+          <ion-item *ngFor="let item of cartItems" class="cart-item">
+            <ion-thumbnail slot="start" *ngIf="item.image">
+              <img [src]="item.image" [alt]="item.name" />
+            </ion-thumbnail>
+            <ion-label class="item-name">{{ item.name }}</ion-label>
+            <ion-note slot="end" class="item-price">
+              {{ item.quantity }} × ${{ item.price | number:'1.2-2' }}
+              <div class="item-total">
+                ${{ (item.price * item.quantity) | number:'1.2-2' }}
+              </div>
+            </ion-note>
+          </ion-item>
+        </ion-list>
+
+        <div class="divider"></div>
+
+        <div class="total-section">
+          <div class="total-row">
+            <span>Subtotal</span>
+            <span>${{ totalAmount | number:'1.2-2' }}</span>
+          </div>
+          <div class="total-row">
+            <span>Shipping</span>
+            <span>Free</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>Total</span>
+            <span>${{ totalAmount | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button
+      expand="block"
+      shape="round"
+      class="pay-button"
+      (click)="payNow()"
+      [disabled]="!cartItems?.length"
+    >
+      <ion-icon slot="start" name="lock-closed"></ion-icon>
+      Pay Securely
+    </ion-button>
+
+    <div class="secure-checkout">
+      <ion-icon name="shield-checkmark"></ion-icon>
+      <span>Secure SSL encrypted payment</span>
+    </div>
+  </div>
+</ion-content>

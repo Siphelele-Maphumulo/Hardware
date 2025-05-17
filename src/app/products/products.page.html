@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar color="shade">
+    <ion-buttons slot="start" class="menu_btn" color="shade">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Products</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Preview of the product being added/edited -->
+  <ion-card *ngIf="newProduct.title || newProduct.image">
+    <ion-card-header>
+      <ion-card-title class="product-title">
+        {{ newProduct.title }}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Amount: {{ newProduct.amount | currency:'ZAR':'symbol':'1.2-2' }}</p>
+      <p>Category ID: {{ newProduct.catID }}</p>
+      <img
+        *ngIf="newProduct.image"
+        [src]="newProduct.image"
+        alt="Preview Image"
+        style="max-width: 100px; height: auto"
+      />
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Form Inputs -->
+  <ion-item style="color: rgb(43, 41, 41)">
+    <ion-label position="floating">Product ID</ion-label>
+    <ion-input [(ngModel)]="newProduct.prodID" type="text"></ion-input>
+  </ion-item>
+
+  <ion-item style="color: rgb(43, 41, 41)">
+    <ion-label position="floating">Title</ion-label>
+    <ion-input [(ngModel)]="newProduct.title" type="text"></ion-input>
+  </ion-item>
+
+  <ion-item style="color: rgb(43, 41, 41)">
+    <ion-label position="floating">Amount</ion-label>
+    <ion-input [(ngModel)]="newProduct.amount" type="number"></ion-input>
+  </ion-item>
+
+  <ion-item style="color: rgb(43, 41, 41)">
+    <ion-label position="floating">Category ID</ion-label>
+    <ion-input [(ngModel)]="newProduct.catID" type="text"></ion-input>
+  </ion-item>
+
+  <ion-item style="color: rgb(43, 41, 41)">
+    <ion-label position="floating">Quantity</ion-label>
+    <ion-input [(ngModel)]="newProduct.qty" type="number"></ion-input>
+  </ion-item>
+
+  <ion-item style="color: rgb(43, 41, 41)">
+    <ion-label position="floating">Image URL</ion-label>
+    <ion-input [(ngModel)]="newProduct.image" type="text"></ion-input>
+  </ion-item>
+
+  <!-- Action Buttons -->
+  <ion-button expand="full" (click)="addOrUpdateProduct()">
+    {{ selectedProductId ? 'Update Product' : 'Add Product' }}
+  </ion-button>
+
+  <ion-button
+    expand="full"
+    color="medium"
+    *ngIf="selectedProductId"
+    (click)="resetForm()"
+  >
+    Cancel
+  </ion-button>
+
+  <!-- Display all saved products -->
+  <ion-list>
+    <ion-item *ngFor="let product of products">
+      <ion-label>
+        <h2 class="product-title">{{ product.title }}</h2>
+        <p>Amount: {{ product.amount | currency:'ZAR':'symbol':'1.2-2' }}</p>
+        <p>Category ID: {{ product.catID }}</p>
+        <p>Quantity: {{ product.qty }}</p>
+      </ion-label>
+      <img
+        [src]="product.image"
+        alt="Product Image"
+        style="max-width: 60px; height: auto; margin-left: 10px"
+      />
+      <ion-button slot="end" fill="clear" (click)="updateProduct(product)">
+        Edit
+      </ion-button>
+      <ion-button
+        slot="end"
+        color="danger"
+        fill="clear"
+        (click)="deleteProduct(product.id)"
+      >
+        Delete
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<!-- Add custom CSS in the component's style -->
+<style>
+  .product-title {
+    color: black;
+    font-weight: bold;
+  }
+</style>

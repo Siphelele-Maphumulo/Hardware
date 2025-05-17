@@ -1,0 +1,57 @@
+{
+    "status": "success",
+    "code": "1",
+    "message": "questions found",
+    "document": {
+        "pageno": "1",
+        "pagesize": "10",
+        "records": [{
+                "date": "Today , 16 Jun 2022",
+                "transactions": [{
+                        "id": "01",
+                        "image": "001.webp",
+                        "title": "Mozzarella",
+                        "amount": "34.10",
+                        "transId": "11741980",
+                        "bank": "From Capitec Bank",
+                        "status": "success"
+                    },
+                    {
+                        "id": "02",
+                        "image": "002.webp",
+                        "title": "switch cover",
+                        "amount": "45,99",
+                        "transId": "58741980",
+                        "bank": "From Standard Bank",
+                        "status": "FAILED"
+                    }
+                ]
+            },
+            {
+                "date": "15 Aug 2022",
+                "transactions": [{
+                    "id": "06",
+                    "image": "006.webp",
+                    "title": "Generator",
+                    "amount": "3999,99",
+                    "transId": "23081980",
+                    "bank": "From Paypal",
+                    "status": "FAILED"
+                }]
+            },
+            {
+                "date": "01 July 2022",
+                "transactions": [{
+                    "id": "07",
+                    "image": "007.webp",
+                    "title": "Geyser",
+                    "amount": "4999,99",
+                    "transId": "58745212",
+                    "bank": "From NedBank",
+                    "status": "success"
+                }]
+            }
+        ]
+
+    }
+}
