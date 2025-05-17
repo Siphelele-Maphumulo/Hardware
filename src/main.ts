@@ -9,7 +9,6 @@ if (environment.production) {
   enableProdMode();
 }
 
-// Set base href dynamically to support GitHub Pages subpath
 platformBrowserDynamic([{ provide: APP_BASE_HREF, useValue: '/Hardware/' }])
   .bootstrapModule(AppModule)
   .catch((err) => console.log(err));
