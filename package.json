@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "ng",
     "build": "ng build --prod",
+    "deploy": "ng build --prod && gh-pages -d dist/app",
     "start": "ng serve",
     "ionic:build": "ionic build",
     "ionic:serve": "ionic serve",
@@ -62,6 +63,7 @@
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
     "eslint-plugin-prefer-arrow": "1.2.2",
+    "gh-pages": "^6.3.0",
     "jasmine-core": "~3.8.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.3.2",
