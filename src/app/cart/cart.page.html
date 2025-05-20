@@ -1,11 +1,14 @@
 <ion-header>
   <ion-toolbar color="shade">
     <ion-buttons slot="start">
-      <ion-button (click)="goBack()">
-        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-      </ion-button>
+      <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-title style="text-align: center">Shopping Cart</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="viewPastPurchases()">
+        <ion-icon name="time-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -13,6 +16,9 @@
   <div *ngIf="cartItems.length === 0" class="empty-cart">
     <ion-icon name="cart-outline" size="large"></ion-icon>
     <p>Your cart is empty.</p>
+    <ion-button fill="outline" (click)="browseProducts()">
+      Browse Products
+    </ion-button>
   </div>
 
   <ng-container *ngIf="cartItems.length > 0">
@@ -20,17 +26,28 @@
       <ion-card *ngFor="let item of cartItems; let i = index" class="cart-card">
         <ion-card-content>
           <div class="item-top">
-            <ion-thumbnail>
-              <img [src]="item.image" alt="{{ item.name }}" />
+            <ion-thumbnail slot="start" (click)="openImage(item.image)">
+              <img [src]="item.image" [alt]="item.name" />
             </ion-thumbnail>
             <div class="details">
               <h2>{{ item.name }}</h2>
-              <p>Unit Price: ${{ item.price | number:'1.2-2' }}</p>
+              <p>Unit Price: ${{ item.price | number: '1.2-2' }}</p>
               <p>
-                Subtotal: ${{ (item.price * item.quantity) | number:'1.2-2' }}
+                Subtotal: ${{ (item.price * item.quantity) | number: '1.2-2' }}
               </p>
+              <ion-button
+                fill="clear"
+                size="small"
+                (click)="writeReview(item)"
+                style="background-color: rgba(250, 250, 138, 0.288)"
+                class="review-btn"
+              >
+                <ion-icon name="star-outline" slot="start"></ion-icon>
+                Write Review
+              </ion-button>
             </div>
           </div>
+
           <div class="controls">
             <ion-button
               fill="outline"
@@ -39,7 +56,9 @@
             >
               <ion-icon slot="icon-only" name="remove-outline"></ion-icon>
             </ion-button>
+
             <span class="qty">{{ item.quantity }}</span>
+
             <ion-button
               fill="outline"
               size="small"
@@ -47,6 +66,7 @@
             >
               <ion-icon slot="icon-only" name="add-outline"></ion-icon>
             </ion-button>
+
             <ion-button
               fill="clear"
               color="danger"
@@ -63,7 +83,9 @@
     <div class="checkout-section">
       <div class="total-summary">
         <p><strong>Total Items:</strong> {{ totalItems }}</p>
-        <p><strong>Total Price:</strong> ${{ totalAmount | number:'1.2-2' }}</p>
+        <p>
+          <strong>Total Price:</strong> ${{ totalAmount | number: '1.2-2' }}
+        </p>
       </div>
       <ion-button color="dark" expand="full" (click)="checkout()">
         Proceed to Checkout

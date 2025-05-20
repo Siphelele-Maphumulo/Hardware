@@ -1,0 +1,22 @@
+.original-review {
+  font-style: italic;
+  padding: 12px;
+  background: var(--ion-color-light);
+  border-radius: 8px;
+}
+
+.reply-input {
+  margin-top: 20px;
+
+  ion-textarea {
+    background: var(--ion-color-light);
+    border-radius: 8px;
+    padding: 8px;
+    margin-top: 8px;
+  }
+}
+
+.send-button {
+  --border-radius: 8px;
+  margin: 8px;
+}

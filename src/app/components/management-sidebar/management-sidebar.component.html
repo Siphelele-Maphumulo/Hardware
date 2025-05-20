@@ -1,0 +1,121 @@
+<ion-content class="glossy-content glossy-sidebar">
+  <!-- Glossy Admin Sidebar -->
+  <div class="glossy-bottomsheet floating" [class.visible]="isManagementOpen">
+    <div class="glossy-sidebar-header">
+      <h3>Admin Dashboard</h3>
+      <ion-button
+        fill="clear"
+        class="glossy-close-btn"
+        (click)="closeSidebar()"
+      >
+      </ion-button>
+    </div>
+
+    <div class="glossy-sidebar-content">
+      <ion-list lines="none" class="glossy-menu-list">
+        <!-- Users -->
+        <ion-item
+          button
+          class="glossy-menu-item users-item"
+          (click)="navigateAndClose('/users')"
+        >
+          <div class="glossy-menu-item-content">
+            <ion-icon
+              name="people-outline"
+              class="glossy-menu-icon"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="glossy-menu-label">User Management</ion-label>
+            <ion-badge slot="end" class="glossy-menu-badge">{{
+              userCount
+            }}</ion-badge>
+          </div>
+        </ion-item>
+
+        <!-- Products -->
+        <ion-item
+          button
+          class="glossy-menu-item products-item"
+          (click)="navigateAndClose('/products')"
+        >
+          <div class="glossy-menu-item-content">
+            <ion-icon
+              name="cube-outline"
+              class="glossy-menu-icon"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="glossy-menu-label">Product Management</ion-label>
+          </div>
+        </ion-item>
+
+        <!-- Stock -->
+        <ion-item
+          button
+          class="glossy-menu-item stock-item"
+          (click)="navigateAndClose('/stock')"
+        >
+          <div class="glossy-menu-item-content">
+            <ion-icon
+              name="pricetags-outline"
+              class="glossy-menu-icon"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="glossy-menu-label">Inventory Analysis</ion-label>
+            <ion-badge slot="end" class="glossy-menu-badge" color="warning"
+              >{{ lowStockCount }} Low</ion-badge
+            >
+          </div>
+        </ion-item>
+
+        <!-- Orders -->
+        <ion-item
+          button
+          class="glossy-menu-item orders-item"
+          (click)="navigateAndClose('/orders')"
+        >
+          <div class="glossy-menu-item-content">
+            <ion-icon
+              name="receipt-outline"
+              class="glossy-menu-icon"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="glossy-menu-label">Order History</ion-label>
+            <ion-badge slot="end" class="glossy-menu-badge" color="success">{{
+              orderCount
+            }}</ion-badge>
+          </div>
+        </ion-item>
+
+        <!-- Reviews -->
+        <ion-item
+          button
+          class="glossy-menu-item reviews-item"
+          (click)="navigateAndClose('/view-reviews')"
+        >
+          <div class="glossy-menu-item-content">
+            <ion-icon
+              name="star-half-outline"
+              class="glossy-menu-icon"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="glossy-menu-label">Customer Reviews</ion-label>
+            <ion-badge slot="end" class="glossy-menu-badge" color="primary"
+              >{{ newReviewsCount }} New</ion-badge
+            >
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div class="glossy-sidebar-footer">
+      <small>Admin v2.4.1 • {{ currentDate | date : "mediumDate" }}</small>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div
+    class="sidebar-overlay"
+    [class.visible]="isManagementOpen"
+    (click)="closeSidebar()"
+  ></div>
+</ion-content>

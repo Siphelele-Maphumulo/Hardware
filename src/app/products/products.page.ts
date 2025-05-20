@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Product } from './product.model';
 import { FireserviceService } from '../fireservice.service';
 import { IonContent } from '@ionic/angular';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-products',
@@ -9,7 +10,8 @@ import { IonContent } from '@ionic/angular';
 })
 export class ProductsComponent implements OnInit {
   @ViewChild(IonContent, { static: false }) content!: IonContent;
-  products: Product[] = [];
+  products: any[] = [];
+  filteredProducts: any[] = [];
   newProduct: Product = {
     prodID: '',
     image: '',
@@ -20,9 +22,19 @@ export class ProductsComponent implements OnInit {
     item_total_amt: 0,
   };
 
-  selectedProductId: string | null = null; // used to track if we're updating
+  selectedProductId: string | null = null;
 
-  constructor(private fireService: FireserviceService) {}
+  // Filter properties
+  searchTerm: string = '';
+  filterType: string = 'all';
+  amountRange: any = { lower: 0, upper: 1000 };
+  minAmount: number = 0;
+  maxAmount: number = 1000;
+
+  constructor(
+    private fireService: FireserviceService,
+    private firestore: AngularFirestore
+  ) {}
 
   ngOnInit() {
     this.loadProducts();
@@ -34,7 +46,38 @@ export class ProductsComponent implements OnInit {
       .valueChanges({ idField: 'id' })
       .subscribe((data) => {
         this.products = data;
+        this.filteredProducts = [...this.products]; // Initialize filteredProducts
+        this.calculateAmountRange();
       });
+  }
+
+  calculateAmountRange() {
+    if (this.products.length > 0) {
+      this.minAmount = Math.floor(
+        Math.min(...this.products.map((p) => p.amount))
+      );
+      this.maxAmount = Math.ceil(
+        Math.max(...this.products.map((p) => p.amount))
+      );
+      this.amountRange = { lower: this.minAmount, upper: this.maxAmount };
+    }
+  }
+
+  filterProducts() {
+    this.filteredProducts = this.products.filter((product) => {
+      const searchTermLower = this.searchTerm.toLowerCase();
+
+      const matchesSearch =
+        product.prodID?.toLowerCase().includes(searchTermLower) ||
+        product.title?.toLowerCase().includes(searchTermLower) ||
+        product.catID?.toLowerCase().includes(searchTermLower);
+
+      const matchesAmount =
+        product.amount >= this.amountRange.lower &&
+        product.amount <= this.amountRange.upper;
+
+      return matchesSearch && matchesAmount;
+    });
   }
 
   // Function to generate a 10-digit product ID

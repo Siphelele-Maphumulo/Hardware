@@ -4,12 +4,15 @@ import {
   ModalController,
   AlertController,
   ToastController,
+  PopoverController,
 } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 
 import { FireserviceService } from 'src/app/fireservice.service';
 import { CartService } from 'src/app/services/cart.service';
+import { ImagePreviewModalComponent } from 'src/app/components/image-preview-modal/image-preview-modal.component';
+import { MenuPopoverComponent } from 'src/app/components/menu-popover/menu-popover.component'; // Adjust path
 
 @Component({
   selector: 'app-order',
@@ -17,8 +20,11 @@ import { CartService } from 'src/app/services/cart.service';
   styleUrls: ['./order.page.scss'],
 })
 export class OrderPage implements OnInit, OnDestroy {
+  searchTerm: string = '';
+  allOrders: any[] = []; // Backup copy of all orders
+  orders: any[] = []; // Displayed (filtered) list
+
   amount = 0;
-  orders: any[] = [];
   total_amt = 0;
   totalItems = 0;
   notifications = 0;
@@ -34,17 +40,16 @@ export class OrderPage implements OnInit, OnDestroy {
     private router: Router,
     private fireService: FireserviceService,
     private cartService: CartService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private popoverCtrl: PopoverController
   ) {}
 
   ngOnInit() {
-    // 1) empty out any persisted cart
     this.cartService.clearCart();
     this.total_amt = 0;
     this.totalItems = 0;
     this.orderSummary = [];
 
-    // 2) now load your products
     this.presentLoading().then(() => {
       this.fireService.getProducts().subscribe((data) => {
         this.orders = data.map((item) => ({
@@ -52,18 +57,41 @@ export class OrderPage implements OnInit, OnDestroy {
           qty: 0,
           qtyLeft: item.qtyLeft ?? item.stock ?? item.qty,
         }));
+        this.allOrders = [...this.orders]; // Store original list for filtering
+
         this.loadingController.dismiss();
-        // no more immediate updateCartDetails() here
         this.cdr.detectChanges();
       });
     });
 
-    // 3) still listen for real cart changes later
     this.cartSub = this.cartService.getCartObservable().subscribe(() => {
       this.totalItems = this.cartService.getTotalItems();
       this.total_amt = this.cartService.getTotal();
       this.updateOrderSummary();
       this.cdr.detectChanges();
+    });
+  }
+
+  // In your component
+  debounceTimer: any;
+
+  filterOrdersDebounced() {
+    clearTimeout(this.debounceTimer);
+    this.debounceTimer = setTimeout(() => this.filterOrders(), 200);
+  }
+
+  filterOrders() {
+    const term = this.searchTerm.trim().toLowerCase();
+
+    if (!term) {
+      this.orders = [...this.allOrders]; // Show all when input is cleared
+      return;
+    }
+
+    this.orders = this.allOrders.filter((order) => {
+      const title = order.title?.toLowerCase() || '';
+      const prodID = order.prodID?.toString() || '';
+      return title.includes(term) || prodID.includes(term);
     });
   }
 
@@ -222,5 +250,46 @@ export class OrderPage implements OnInit, OnDestroy {
 
   goBack() {
     this.router.navigate(['/home']);
+  }
+
+  async openImage(imageUrl: string) {
+    const modal = await this.modalCtrl.create({
+      component: ImagePreviewModalComponent,
+      componentProps: {
+        imageSrc: imageUrl,
+      },
+      cssClass: 'image-preview-modal',
+    });
+
+    return await modal.present();
+  }
+
+  async presentPopover(ev: any) {
+    const popover = await this.popoverCtrl.create({
+      component: MenuPopoverComponent,
+      event: ev,
+      translucent: true,
+      showBackdrop: false,
+    });
+    await popover.present();
+  }
+
+  writeReview(item: any) {
+    console.log('Item being reviewed:', item);
+
+    const productData = {
+      prodID: item.prodID.toString(),
+      title: item.title,
+      price: item.amount,
+      image: item.image || 'assets/default-product.png',
+    };
+
+    console.log('Passing product data to review:', productData);
+
+    this.router.navigate(['/reviews'], {
+      state: {
+        product: productData,
+      },
+    });
   }
 }

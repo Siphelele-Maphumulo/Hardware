@@ -8,6 +8,55 @@
 </ion-header>
 
 <ion-content>
+  <!-- Filter Controls -->
+  <ion-toolbar>
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionChange)="filterProducts()"
+      placeholder="Search products"
+      debounce="300"
+    >
+    </ion-searchbar>
+
+    <ion-item>
+      <ion-label>Filter by:</ion-label>
+      <ion-select
+        [(ngModel)]="filterType"
+        (ionChange)="filterProducts()"
+        interface="popover"
+      >
+        <ion-select-option value="all">All Fields</ion-select-option>
+        <ion-select-option value="prodID">Product ID</ion-select-option>
+        <ion-select-option value="title">Title</ion-select-option>
+        <ion-select-option value="catID">Category</ion-select-option>
+        <ion-select-option value="amount">Amount</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="filterType === 'amount'">
+      <ion-label>Amount Range</ion-label>
+      <ion-range
+        dualKnobs="true"
+        [(ngModel)]="amountRange"
+        (ionChange)="filterProducts()"
+        [min]="minAmount"
+        [max]="maxAmount"
+        [step]="10"
+      >
+        <ion-label slot="start"
+          >{{minAmount | currency:'ZAR':'symbol':'1.2-2'}}</ion-label
+        >
+        <ion-label slot="end"
+          >{{maxAmount | currency:'ZAR':'symbol':'1.2-2'}}</ion-label
+        >
+      </ion-range>
+      <ion-label>
+        {{amountRange.lower | currency:'ZAR':'symbol':'1.2-2'}} -
+        {{amountRange.upper | currency:'ZAR':'symbol':'1.2-2'}}
+      </ion-label>
+    </ion-item>
+  </ion-toolbar>
+
   <!-- Preview of the product being added/edited -->
   <ion-card *ngIf="newProduct.title || newProduct.image">
     <ion-card-header>
@@ -72,13 +121,14 @@
     Cancel
   </ion-button>
 
-  <!-- Display all saved products -->
+  <!-- Display filtered products -->
   <ion-list>
-    <ion-item *ngFor="let product of products">
+    <ion-item *ngFor="let product of filteredProducts">
       <ion-label>
         <h2 class="product-title">{{ product.title }}</h2>
+        <p>ID: {{ product.prodID }}</p>
         <p>Amount: {{ product.amount | currency:'ZAR':'symbol':'1.2-2' }}</p>
-        <p>Category ID: {{ product.catID }}</p>
+        <p>Category: {{ product.catID }}</p>
         <p>Quantity: {{ product.qty }}</p>
       </ion-label>
       <img
@@ -99,9 +149,16 @@
       </ion-button>
     </ion-item>
   </ion-list>
+
+  <ion-card *ngIf="filteredProducts.length === 0 && products.length > 0">
+    <ion-card-content>No products match your filters.</ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="products.length === 0">
+    <ion-card-content>No products available.</ion-card-content>
+  </ion-card>
 </ion-content>
 
-<!-- Add custom CSS in the component's style -->
 <style>
   .product-title {
     color: black;

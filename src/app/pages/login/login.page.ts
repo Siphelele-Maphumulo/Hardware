@@ -91,24 +91,26 @@ export class LoginPage implements OnInit {
     }
   }
 
-  warningToaster(message: string) {
-    this.toast
-      .create({
-        message,
-        color: 'danger',
-        duration: 4000,
-      })
-      .then((toastData) => toastData.present());
+  async showToaster(message: string) {
+    const toast = await this.toast.create({
+      message,
+      duration: 3000,
+      cssClass: 'custom-toast',
+      position: 'middle', // 'middle' centers the toast vertically
+      color: 'success',
+    });
+    await toast.present();
   }
 
-  showToaster(message: string) {
-    this.toast
-      .create({
-        message,
-        color: 'success',
-        duration: 4000,
-      })
-      .then((toastData) => toastData.present());
+  async warningToaster(message: string) {
+    const toast = await this.toast.create({
+      message,
+      duration: 3000,
+      cssClass: 'custom-toast warning',
+      position: 'middle',
+      color: 'danger',
+    });
+    await toast.present();
   }
 
   logging() {
@@ -120,45 +122,49 @@ export class LoginPage implements OnInit {
       .then(
         (res) => {
           if (res.user) {
-            // Check if the user is email verified after the login attempt
+            // Reload to get the latest emailVerified status
             res.user.reload().then(() => {
               if (res.user.emailVerified) {
-                console.log(res);
-                // Proceed only if the user has a valid UID and email is verified
                 if (res.user?.uid) {
-                  // Fetch user details from Firestore
                   this.fireService.getDetails({ uid: res.user.uid }).subscribe(
                     (userDetails) => {
-                      console.log(userDetails);
-
-                      // Proceed with the user details, and open the appropriate page
                       this.openDetailsWithState();
-
-                      // Clear sensitive data for security purposes
                       this.userPass = '';
                       this.userDis = '';
-
-                      // Show a welcome message once the details are successfully retrieved
                       this.showToaster('Welcome ' + userDetails['name']);
                     },
                     (error) => {
-                      // Handle Firestore errors
-                      this.warningToaster('Error fetching user details');
+                      this.warningToaster(
+                        'Failed to fetch user details. Please try again.'
+                      );
                       console.error(error);
                     }
                   );
                 }
               } else {
-                // If the email is not verified, show an alert
-                window.alert('Email is not verified');
+                this.warningToaster(
+                  'Please verify your email before logging in.'
+                );
               }
             });
           }
         },
         (err) => {
-          // Handle authentication errors
-          this.warningToaster(err.message);
-          console.log(err);
+          // Map Firebase auth errors to friendly messages
+          let friendlyMsg = 'Login failed. Please try again.';
+
+          if (err.code === 'auth/user-not-found') {
+            friendlyMsg = 'No account found with this email.';
+          } else if (err.code === 'auth/wrong-password') {
+            friendlyMsg = 'Incorrect password. Please try again.';
+          } else if (err.code === 'auth/invalid-email') {
+            friendlyMsg = 'Invalid email format.';
+          } else if (err.code === 'auth/user-disabled') {
+            friendlyMsg = 'This user account has been disabled.';
+          }
+
+          this.warningToaster(friendlyMsg);
+          console.error(err);
         }
       );
   }

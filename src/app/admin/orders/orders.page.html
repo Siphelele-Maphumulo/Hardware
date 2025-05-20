@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-toolbar color="shade">
+    <ion-buttons slot="start" class="menu_btn" color="shade">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Receipt Histories</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Search and Filter Section -->
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="filterType" (ionChange)="resetFilters()">
+      <ion-segment-button value="email">
+        <ion-label>Email</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="receiptId">
+        <ion-label>Receipt ID</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="amount">
+        <ion-label>Amount</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionChange)="filterReceipts()"
+      [placeholder]="getSearchPlaceholder()"
+    >
+    </ion-searchbar>
+
+    <!-- <ion-item>
+      <ion-label>Filter by Date</ion-label>
+      <ion-datetime
+        [(ngModel)]="dateFilter"
+        (ionChange)="filterReceipts()"
+        displayFormat="MMM DD, YYYY"
+        placeholder="Select Date"
+      >
+      </ion-datetime>
+      <ion-button fill="clear" (click)="clearDateFilter()">
+        <ion-icon name="close-circle" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item> -->
+
+    <ion-item *ngIf="filterType === 'amount'">
+      <ion-label>Amount Range</ion-label>
+      <ion-range
+        dualKnobs="true"
+        [(ngModel)]="amountRange"
+        (ionChange)="filterReceipts()"
+        [min]="minAmount"
+        [max]="maxAmount"
+        [step]="100"
+      >
+        <ion-label slot="start">R{{minAmount}}</ion-label>
+        <ion-label slot="end">R{{maxAmount}}</ion-label>
+      </ion-range>
+      <ion-label>R{{amountRange.lower}} - R{{amountRange.upper}}</ion-label>
+    </ion-item>
+  </ion-toolbar>
+
+  <!-- Receipt List -->
+  <ion-list
+    *ngIf="filteredReceipts && filteredReceipts.length > 0; else noReceipts"
+  >
+    <ion-item *ngFor="let receipt of filteredReceipts">
+      <ion-label>
+        <h2 class="receipt-email">{{ receipt.email }}</h2>
+        <p>Date: {{ receipt.timestamp | date:'medium' }}</p>
+        <p>Total Amount: R{{ receipt.totalAmount | number }}</p>
+        <p>Receipt ID: {{ receipt.id }}</p>
+
+        <ion-list>
+          <ion-item *ngFor="let item of receipt.items">
+            <ion-label>
+              <h3>{{ item.name }}</h3>
+              <p>Price: R{{ item.price | number }} x {{ item.quantity }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-label>
+      <ion-button
+        slot="end"
+        color="danger"
+        fill="clear"
+        (click)="confirmDelete(receipt.id)"
+      >
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noReceipts>
+    <ion-card>
+      <ion-card-content>No matching receipts found.</ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-content>

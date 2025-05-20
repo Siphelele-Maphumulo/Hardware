@@ -1,4 +1,13 @@
 :root {
+  --ion-color-primary: #808080;
+  --ion-color-secondary: #a0a0a0;
+  --ion-color-tertiary: #b0b0b0;
+  --ion-color-success: #8e8e8e;
+  --ion-color-warning: #999999;
+  --ion-color-danger: #707070;
+  --ion-color-dark: #666666;
+  --ion-color-medium: #888888;
+  --ion-color-light: #cccccc;
   /** primary **/
   --ion-color-primary: #333333; /* Vibrant red-orange */
   --ion-color-primary-rgb: 255, 87, 51;
@@ -323,4 +332,36 @@ ion-button:hover {
 
 ion-card:hover {
   --box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+$placeholder-color: grey;
+
+input::placeholder,
+textarea::placeholder {
+  color: $placeholder-color;
+  opacity: 1;
+}
+
+.custom-toast {
+  text-align: center;
+  --border-radius: 10px;
+  --box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  --max-width: 80%;
+  margin: 0 auto;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.custom-toast.warning {
+  --color: #fff;
+  --background: #f44336; // Red background for warnings
+}
+.custom-toast.success {
+  --color: #fff;
+  --background: #4caf50; // Green background for success
+}
+
+.custom-toast.info {
+  --color: #fff;
+  --background: #2196f3; // Blue background for info
 }

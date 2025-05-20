@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CartItem, FireserviceService } from 'src/app/fireservice.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Router, NavigationExtras } from '@angular/router';
 import { Location } from '@angular/common';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { v4 as uuidv4 } from 'uuid';
-
-// Import EmailJS
 import emailjs from 'emailjs-com';
+import { AngularFirestore } from '@angular/fire/compat/firestore'; // Add this import
 
 @Component({
   selector: 'app-checkout',
@@ -18,12 +15,15 @@ import emailjs from 'emailjs-com';
 export class CheckoutPage implements OnInit {
   cartItems: CartItem[] = [];
   totalAmount: number = 0;
+  // Remove this line: firestore: any;
 
   constructor(
     private fireService: FireserviceService,
     private router: Router,
     private location: Location,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
+    private firestore: AngularFirestore // Add AngularFirestore here
   ) {}
 
   ngOnInit() {
@@ -37,7 +37,6 @@ export class CheckoutPage implements OnInit {
       this.cartItems = state.cartItems;
       this.totalAmount = state.totalAmount || 0;
     } else {
-      // Fallback to service
       this.fireService.getCart().subscribe((items) => {
         this.cartItems = items;
         this.totalAmount = items.reduce(
@@ -77,65 +76,67 @@ export class CheckoutPage implements OnInit {
               return false;
             }
 
+            const loading = await this.loadingCtrl.create({
+              message: 'Processing your order...',
+            });
+            await loading.present();
+
             try {
+              // Validate cart items first
+              if (!this.cartItems || this.cartItems.length === 0) {
+                throw new Error('Cart is empty');
+              }
+
+              // Create receipt object with proper product references
               const receipt = {
-                id: uuidv4(),
+                id: this.fireService.firestore.firestore.collection('_').doc()
+                  .id,
                 email: email,
                 items: this.cartItems.map((item) => ({
-                  id: item.id,
+                  productId: item.id.toString(), // Ensure string ID
                   name: item.name,
                   price: item.price,
                   quantity: item.quantity,
                 })),
                 totalAmount: this.totalAmount,
                 timestamp: new Date(),
+                status: 'completed',
               };
 
-              // Save receipt in Firestore (optional)
-              await this.fireService.saveReceipt(
-                JSON.parse(JSON.stringify(receipt))
-              );
+              // 1. First update product quantities
+              const updateSuccess =
+                await this.fireService.updateProductQuantities(receipt);
+              if (!updateSuccess) {
+                throw new Error('Failed to update product quantities');
+              }
 
-              // Prepare EmailJS template params
-              const emailParams = {
-                to_email: email,
-                receipt_id: receipt.id,
-                total_amount: receipt.totalAmount.toFixed(2),
-                timestamp: receipt.timestamp.toLocaleString(),
-                items_list: receipt.items
-                  .map(
-                    (item) =>
-                      `${item.name} (x${item.quantity}) - R${item.price.toFixed(
-                        2
-                      )}`
-                  )
-                  .join('\n'),
-              };
+              // 2. Save receipt
+              await this.fireService.saveReceipt(receipt);
 
-              // Send email using EmailJS
-              await emailjs.send(
-                'service_yx0n32r',
-                'template_lii9gcr',
-                emailParams,
-                'eKzdemI4rGn5XqTtd'
-              );
+              // 3. Send email receipt (if implemented)
+              await this.sendEmailReceipt(email, receipt);
 
-              // Clear cart
+              // 4. Clear cart
               await this.fireService.clearCart();
 
-              // Navigate to receipt page with state
-              const navigationExtras: NavigationExtras = {
-                state: {
-                  receipt,
-                },
-              };
+              await loading.dismiss();
 
-              this.router.navigate(['/receipt'], navigationExtras);
+              // Navigate to receipt page
+              this.router.navigate(['/receipt'], {
+                state: { receipt },
+                replaceUrl: true, // Prevent going back to checkout
+              });
             } catch (error) {
-              console.error('Payment or email failed:', error);
+              await loading.dismiss();
+              console.error('Checkout error:', error);
+              const errorMessage =
+                error instanceof Error
+                  ? error.message
+                  : 'Failed to complete checkout';
+
               const errorAlert = await this.alertCtrl.create({
                 header: 'Error',
-                message: 'Failed to process payment or send email.',
+                message: errorMessage,
                 buttons: ['OK'],
               });
               await errorAlert.present();
@@ -146,6 +147,33 @@ export class CheckoutPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  private async sendEmailReceipt(email: string, receipt: any) {
+    try {
+      const emailParams = {
+        to_email: email,
+        receipt_id: receipt.id,
+        total_amount: receipt.totalAmount.toFixed(2),
+        timestamp: receipt.timestamp.toLocaleString(),
+        items_list: receipt.items
+          .map(
+            (item) =>
+              `${item.name} (x${item.quantity}) - R${item.price.toFixed(2)}`
+          )
+          .join('\n'),
+      };
+
+      await emailjs.send(
+        'service_yx0n32r',
+        'template_lii9gcr',
+        emailParams,
+        'eKzdemI4rGn5XqTtd'
+      );
+    } catch (error) {
+      console.error('Email sending failed:', error);
+      // Don't fail the whole checkout if email fails
+    }
   }
 
   private isValidEmail(email: string): boolean {

@@ -15,6 +15,40 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'users',
+    loadChildren: () =>
+      import('./admin/users/users.module').then((m) => m.UsersPageModule),
+    canActivate: [AuthGuard],
+  },
+
+  {
+    path: 'orders',
+    loadChildren: () =>
+      import('./admin/orders/orders.module').then((m) => m.OrdersPageModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'stock',
+    loadChildren: () =>
+      import('./admin/stock/stock.module').then((m) => m.StockPageModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'reviews',
+    loadChildren: () =>
+      import('./admin/reviews/reviews.module').then((m) => m.ReviewsPageModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'view-reviews',
+    loadChildren: () =>
+      import('./admin/view-reviews/view-reviews.module').then(
+        (m) => m.ViewReviewsPageModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  // Existing routes
+  {
     path: 'order',
     loadChildren: () =>
       import('./pages/popup/order/order.module').then((m) => m.OrderPageModule),
@@ -28,7 +62,6 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
-
   {
     path: 'forgot',
     loadChildren: () =>
@@ -73,6 +106,8 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/receipt/receipt.module').then((m) => m.ReceiptPageModule),
   },
+  // Fallback route
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
 @NgModule({

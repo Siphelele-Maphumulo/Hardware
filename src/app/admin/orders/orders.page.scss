@@ -1,0 +1,201 @@
+/* Variables for colors and other reusable values */
+:root {
+  --primary-color: rgb(7, 161, 233);
+  --secondary-color: rgb(67, 7, 233);
+  --gray-color: #ccc;
+  --font-family: "Poppins", sans-serif;
+  --font-size-small: 16px;
+  --font-size-medium: 22px;
+  --border-radius: 10px;
+  --border-color: #aeb7ca;
+}
+
+.grid {
+  color: black;
+  font-size: var(--font-size-medium);
+  font-weight: bold;
+  border-color: var(--border-color);
+  border-radius: var(--border-radius);
+  border-style: solid;
+  margin-bottom: -1px;
+  background: #cdcfd6;
+}
+
+.grid ion-col {
+  border: 2px solid var(--border-color);
+}
+
+ion-header {
+  ion-icon {
+    font-size: 30px;
+    position: relative;
+    margin-left: 10px;
+  }
+
+  #notification-badge-msg,
+  #notification-badge {
+    position: absolute;
+    top: 5px;
+    color: #fff;
+    z-index: 111;
+  }
+
+  #notification-badge-msg {
+    background-color: var(--secondary-color);
+    right: 95px;
+  }
+
+  #notification-badge {
+    background-color: var(--primary-color);
+    right: 45px;
+  }
+
+  img {
+    width: 35px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+}
+
+ion-content {
+  --background-color: #f9f9f9;
+  font-family: var(--font-family);
+
+  .upperBox {
+    background-color: #fff;
+    margin-top: 10px;
+    box-shadow: rgb(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    height: auto;
+    display: grid;
+    grid-template-columns: 40% 35% 15% 10%;
+    grid-template-rows: 15% 35% 35% 15%;
+    gap: 5px 5px;
+    grid-template-areas:
+      "image title title menu"
+      "image orderId orderId orderId"
+      "image amount status status"
+      "image time edit edit";
+  }
+
+  .upperBox .image {
+    grid-area: image;
+  }
+
+  .upperBox .image img {
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    height: auto;
+  }
+
+  .upperBox .title {
+    color: #000;
+    grid-area: title;
+  }
+
+  .upperBox .title h3 {
+    font-size: var(--font-size-small);
+  }
+
+  .upperBox .menu {
+    grid-area: menu;
+    margin-left: -10px;
+    justify-self: center;
+  }
+
+  .upperBox .menu h3 {
+    margin-right: 10px;
+    color: red;
+  }
+
+  .upperBox .orderId {
+    grid-area: orderId;
+    margin-right: 10px;
+  }
+
+  .upperBox .orderId p {
+    color: gray;
+  }
+
+  .upperBox .amount {
+    grid-area: amount;
+    align-self: start;
+    justify-self: start;
+    margin-top: -25px;
+  }
+
+  .upperBox .edit {
+    grid-area: edit;
+    margin-top: -30px;
+    margin-right: 20px;
+  }
+
+  .upperBox .edit .wrapper {
+    height: auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 22px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .upperBox .edit .wrapper span {
+    width: 100%;
+    text-align: center;
+    font-size: var(--font-size-medium);
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .upperBox .edit .wrapper span.num {
+    font-size: var(--font-size-medium);
+    border-right: 2px solid rgba(0, 0, 0, 0.2);
+    border-left: 2px solid rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    color: rgb(65, 240, 65);
+  }
+
+  #moreItems {
+    text-align: center;
+    color: red;
+  }
+
+  .order_summary {
+    width: 100%;
+    background-color: #fff;
+    margin-top: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    height: auto;
+    padding: 10px;
+  }
+
+  .order_summary h3 {
+    color: red;
+  }
+
+  .order_summary p {
+    color: grey;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-bottom: 1px solid grey;
+  }
+
+  .order_summary p span {
+    float: right;
+    margin-right: 10px;
+  }
+}
+
+.receipt-email {
+  color: black;
+  font-weight: bold;
+}
+ion-modal {
+  --width: 90%;
+  --height: 80%;
+  --border-radius: 16px;
+}

@@ -1,20 +1,18 @@
-<!-- checkout.page.html -->
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/cart"></ion-back-button>
     </ion-buttons>
-    <ion-title style="text-align: center">Payments</ion-title>
+    <ion-title style="text-align: center">Checkout</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" fullscreen>
   <div class="checkout-container">
+    <!-- Purchased Items -->
     <ion-card>
       <ion-card-header>
-        <ion-card-title style="text-align: center"
-          >Items Purchased</ion-card-title
-        >
+        <ion-card-title>Items Purchased</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
@@ -23,22 +21,25 @@
             <ion-thumbnail slot="start" *ngIf="item.image">
               <img [src]="item.image" [alt]="item.name" />
             </ion-thumbnail>
-            <ion-label class="item-name">{{ item.name }}</ion-label>
+
+            R{{ (item.price * item.quantity) | number:'1.2-2' }}
             <ion-note slot="end" class="item-price">
-              {{ item.quantity }} × ${{ item.price | number:'1.2-2' }}
+              {{ item.quantity }} × R{{ item.price | number:'1.2-2' }}
               <div class="item-total">
-                ${{ (item.price * item.quantity) | number:'1.2-2' }}
+                <ion-label class="item-name">{{ item.name }}</ion-label>
               </div>
             </ion-note>
           </ion-item>
         </ion-list>
 
+        <!-- Divider -->
         <div class="divider"></div>
 
+        <!-- Totals -->
         <div class="total-section">
           <div class="total-row">
             <span>Subtotal</span>
-            <span>${{ totalAmount | number:'1.2-2' }}</span>
+            <span>R{{ totalAmount | number:'1.2-2' }}</span>
           </div>
           <div class="total-row">
             <span>Shipping</span>
@@ -46,12 +47,13 @@
           </div>
           <div class="total-row grand-total">
             <span>Total</span>
-            <span>${{ totalAmount | number:'1.2-2' }}</span>
+            <span>R{{ totalAmount | number:'1.2-2' }}</span>
           </div>
         </div>
       </ion-card-content>
     </ion-card>
 
+    <!-- Pay Button -->
     <ion-button
       expand="block"
       shape="round"
@@ -59,12 +61,13 @@
       (click)="payNow()"
       [disabled]="!cartItems?.length"
     >
-      <ion-icon slot="start" name="lock-closed"></ion-icon>
+      <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
       Pay Securely
     </ion-button>
 
+    <!-- Security Badge -->
     <div class="secure-checkout">
-      <ion-icon name="shield-checkmark"></ion-icon>
+      <ion-icon name="shield-checkmark-outline"></ion-icon>
       <span>Secure SSL encrypted payment</span>
     </div>
   </div>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FireserviceService, CartItem } from '../fireservice.service';
 import { Location } from '@angular/common';
+import { LoadingController, ModalController } from '@ionic/angular';
+import { ImagePreviewModalComponent } from '../components/image-preview-modal/image-preview-modal.component';
 
 @Component({
   selector: 'app-cart',
@@ -16,7 +18,9 @@ export class CartPage implements OnInit {
   constructor(
     private fireService: FireserviceService,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private loadingController: LoadingController,
+    private modalCtrl: ModalController
   ) {}
 
   ngOnInit() {
@@ -26,17 +30,19 @@ export class CartPage implements OnInit {
     });
   }
 
-  // ← New unique names
   increaseQuantity(i: number) {
     this.fireService.incCartItem(this.cartItems[i]);
+    this.recalculateTotals();
   }
 
   decreaseQuantity(i: number) {
     this.fireService.decCartItem(this.cartItems[i]);
+    this.recalculateTotals();
   }
 
   removeItem(i: number) {
     this.fireService.removeCartItem(this.cartItems[i]);
+    this.recalculateTotals();
   }
 
   private recalculateTotals() {
@@ -57,6 +63,41 @@ export class CartPage implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/order']);
+    this.location.back(); // or: this.router.navigate(['/order']);
+  }
+
+  writeReview(item: any) {
+    console.log('Navigating to reviews page with product:', item);
+    this.router.navigate(['/reviews'], {
+      state: {
+        product: {
+          prodID: item.id,
+          title: item.name,
+          price: item.price,
+          image: item.image || 'assets/default-product.png',
+        },
+      },
+    });
+  }
+
+  async openImage(imageUrl: string) {
+    const modal = await this.modalCtrl.create({
+      component: ImagePreviewModalComponent,
+      componentProps: {
+        imageSrc: imageUrl,
+      },
+      cssClass: 'image-preview-modal',
+    });
+    await modal.present();
+  }
+
+  // ✅ NEW: Handles 'Browse Products' button
+  browseProducts() {
+    this.router.navigate(['/order']); // or any route you use for product browsing
+  }
+
+  // ✅ NEW: Handles 'View Past Purchases' button
+  viewPastPurchases() {
+    this.router.navigate(['/orders']); // or the route you've defined
   }
 }

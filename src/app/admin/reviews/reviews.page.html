@@ -1,0 +1,148 @@
+<ion-header>
+  <ion-toolbar color="shade">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Share Your Experience</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="review-header">
+    <h2>We value your feedback!</h2>
+    <p>Help us improve by sharing your experience with our products</p>
+  </div>
+
+  <!-- Product Selection Section -->
+  <ion-card *ngIf="!selectedProduct">
+    <ion-card-header>
+      <ion-card-title>Select a Product to Review</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-segment [(ngModel)]="searchMode" (ionChange)="onSearchModeChange()">
+        <ion-segment-button value="search">
+          <ion-label>Search</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="purchased">
+          <ion-label>My Purchases</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <div *ngIf="searchMode === 'search'">
+        <ion-item>
+          <ion-label position="floating"
+            >Search by Product Name or ID</ion-label
+          >
+          <ion-input
+            [(ngModel)]="searchTerm"
+            (ionChange)="searchProducts()"
+          ></ion-input>
+        </ion-item>
+
+        <ion-list *ngIf="searchResults.length > 0">
+          <ion-item
+            *ngFor="let product of searchResults"
+            (click)="selectProduct(product)"
+          >
+            <ion-thumbnail slot="start">
+              <img [src]="product.image" [alt]="product.title" />
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{ product.title }}</h3>
+              <p>{{ product.prodID }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <div *ngIf="searchMode === 'purchased'">
+        <ion-list>
+          <ion-item
+            *ngFor="let order of purchasedItems"
+            (click)="selectProduct(order.product)"
+          >
+            <ion-thumbnail slot="start">
+              <img [src]="order.product.image" [alt]="order.product.title" />
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{ order.product.title }}</h3>
+              <p>Purchased: {{ order.date | date }}</p>
+              <p>Quantity: {{ order.quantity }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Selected Product Display -->
+  <ion-card class="product-card" *ngIf="selectedProduct">
+    <ion-card-header>
+      <ion-card-title>{{ selectedProduct.title }}</ion-card-title>
+      <ion-button fill="clear" (click)="changeProduct()">
+        <ion-icon name="close" slot="start"></ion-icon>
+        Change Product
+      </ion-button>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="product-info">
+        <ion-thumbnail>
+          <img [src]="selectedProduct.image" [alt]="selectedProduct.title" />
+        </ion-thumbnail>
+        <div class="product-details">
+          <p>Product ID: {{ selectedProduct.prodID }}</p>
+          <p>Price: {{ selectedProduct.price | currency:'ZAR':'symbol' }}</p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Review Form -->
+  <ion-card class="review-form" *ngIf="selectedProduct">
+    <ion-card-header>
+      <ion-card-title>Your Review</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="rating-section">
+        <h3>Overall Rating</h3>
+        <div class="stars">
+          <ion-icon
+            *ngFor="let star of [1,2,3,4,5]"
+            [name]="rating >= star ? 'star' : 'star-outline'"
+            (click)="setRating(star)"
+            [color]="rating >= star ? 'warning' : 'medium'"
+          >
+          </ion-icon>
+        </div>
+      </div>
+
+      <ion-item>
+        <ion-label position="floating">Review Title</ion-label>
+        <ion-input [(ngModel)]="review.title"
+          >{{ selectedProduct.title }}</ion-input
+        >
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Your Review</ion-label>
+        <ion-textarea
+          [(ngModel)]="review.content"
+          rows="5"
+          placeholder="Tell us about your experience with this product..."
+        >
+        </ion-textarea>
+      </ion-item>
+
+      <ion-button
+        expand="block"
+        color="primary"
+        (click)="submitReview()"
+        [disabled]="!rating  || !review.content"
+      >
+        Submit Review
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

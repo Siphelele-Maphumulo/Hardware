@@ -36,16 +36,16 @@ body {
 }
 
 ion-content {
-  --background: #ffffff;
+  --background: #ffffff93;
 }
 
 ion-toolbar {
-  --background: #ffffff;
+  --background: #ffffff8f;
   --color: #000000;
 }
 
 .card {
-  background-color: #ffffff;
+  background-color: #ffffff9f;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -59,7 +59,7 @@ ion-toolbar {
   --background: #ffffff;
 
   ion-content {
-    --background: #f5f5f5;
+    --background: #f5f5f59a;
   }
 
   .modal-wrapper {
@@ -154,4 +154,93 @@ ion-toolbar {
   .receipt-container {
     box-shadow: none;
   }
+}
+
+.image-preview-modal .modal-wrapper {
+  background-color: #000;
+}
+
+.image-preview-modal .ion-page {
+  background-color: transparent;
+}
+
+.glassy-list ion-item {
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  /* base transparent background for glass effect */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Colored text for each item */
+.home-item {
+  color: blue;
+}
+.orders-item {
+  color: green;
+}
+.settings-item {
+  color: black;
+}
+.logout-item {
+  color: red;
+}
+
+/* Glossy glassy hover effect */
+.glassy-list ion-item:hover {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.6);
+}
+
+/* Optional: add a subtle glossy shine */
+.glassy-list ion-item::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  z-index: 1;
+}
+
+.glassy-list ion-item:hover::before {
+  opacity: 1;
+}
+
+.custom-toast {
+  text-align: center;
+  --border-radius: 10px;
+  --box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  --max-width: 80%;
+  margin: 0 auto;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.custom-toast.warning {
+  --color: #fff;
+  --background: #f44336; // Red background for warnings
+}
+.custom-toast.success {
+  --color: #fff;
+  --background: #4caf50; // Green background for success
+}
+
+.custom-toast.info {
+  --color: #fff;
+  --background: #2196f3; // Blue background for info
 }

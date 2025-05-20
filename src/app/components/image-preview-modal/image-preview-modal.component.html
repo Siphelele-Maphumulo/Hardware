@@ -1,0 +1,14 @@
+<ion-header translucent>
+  <ion-toolbar color="light">
+    <ion-title>View Image</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" fullscreen>
+  <div class="image-wrapper">
+    <img [src]="imageSrc" alt="Preview" class="preview-image" />
+  </div>
+</ion-content>

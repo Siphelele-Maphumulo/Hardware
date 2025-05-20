@@ -11,8 +11,8 @@
     </p>
   </div>
 </ion-header>
-
-<ion-content class="glass-content">
+<ion-content class="glossy-content" style="background: transparent">
+  <!-- Main Content -->
   <div class="image-container">
     <img
       src="https://github.com/Siphelele-Maphumulo/Hardware/blob/main/docs/assets/img/wallpaperr.jpg?raw=true"
@@ -23,22 +23,38 @@
 
 <ion-tabs>
   <ion-tab-bar slot="bottom" class="glass-tab-bar">
-    <ion-tab-button tab="profile" class="glass-tab-button">
-      <ion-icon name="person" class="tab-icon"></ion-icon>
-      <ion-label class="tab-label">Profile</ion-label>
+    <!-- Management Tab -->
+    <ion-tab-button
+      class="glass-tab-button"
+      *ngIf="isAdmin()"
+      (click)="toggleManagement()"
+    >
+      <ion-icon name="settings" class="tab-icon"></ion-icon>
+      <ion-label class="tab-label">Management</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button (click)="navigateWelcome()" class="glass-tab-button">
+    <!-- Message Tab -->
+    <ion-tab-button
+      class="glass-tab-button"
+      *ngIf="!isAdmin()"
+      [routerLink]="['/view-reviews']"
+    >
+      <ion-icon name="mail" class="tab-icon"></ion-icon>
+      <ion-label class="tab-label">Messages</ion-label>
+    </ion-tab-button>
+
+    <!-- Other Tabs -->
+    <ion-tab-button [routerLink]="['/order']" class="glass-tab-button">
       <ion-icon name="cash-outline" class="tab-icon"></ion-icon>
       <ion-label class="tab-label">Buy</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button (click)="navigateQoute()" class="glass-tab-button">
+    <ion-tab-button [routerLink]="['/cart']" class="glass-tab-button">
       <ion-icon name="cart-outline" class="tab-icon"></ion-icon>
       <ion-label class="tab-label">Cart</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="settings" class="glass-tab-button">
+    <ion-tab-button [routerLink]="['/settings']" class="glass-tab-button">
       <ion-icon name="settings" class="tab-icon"></ion-icon>
       <ion-label class="tab-label">Settings</ion-label>
     </ion-tab-button>

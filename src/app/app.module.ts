@@ -16,9 +16,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 import { FormsModule } from '@angular/forms';
+import { ImagePreviewModalModule } from './components/image-preview-modal/image-preview-modal.module';
+import { MenuPopoverComponent } from './components/menu-popover/menu-popover.component';
+
+// ✅ Add your ManagementSidebarComponent here
+import { ManagementSidebarComponent } from './components/management-sidebar/management-sidebar.component';
+import { ReplyModalComponent } from './components/reply-modal/reply-modal.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    MenuPopoverComponent,
+    ManagementSidebarComponent, // ✅ Declare it here
+    ReplyModalComponent,
+  ],
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -28,10 +39,10 @@ import { FormsModule } from '@angular/forms';
     AngularFireDatabaseModule,
     AngularFireModule.initializeApp(environment.firebase),
     HttpClientModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot(), // ✅ keep only this, not twice
     AppRoutingModule,
+    ImagePreviewModalModule,
   ],
-
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

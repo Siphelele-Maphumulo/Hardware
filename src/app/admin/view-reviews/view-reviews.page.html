@@ -1,0 +1,191 @@
+<ion-header>
+  <ion-toolbar color="shade">
+    <ion-buttons slot="start" class="menu_btn" color="shade">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Customer Reviews</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleFilters()">
+        <ion-icon slot="icon-only" name="filter"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Filter Section -->
+  <ion-toolbar *ngIf="showFilters" color="light">
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionChange)="applyFilters()"
+      placeholder="Search all fields"
+    ></ion-searchbar>
+
+    <ion-segment [(ngModel)]="activeFilter" (ionChange)="applyFilters()">
+      <ion-segment-button value="all">
+        <ion-label>All</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="username">
+        <ion-label>Username</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="email">
+        <ion-label>Email</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="product">
+        <ion-label>Product</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="rating">
+        <ion-label>Rating</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="status">
+        <ion-label>Status</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-chip
+      *ngIf="activeFilter === 'rating'"
+      outline
+      (click)="selectRating()"
+    >
+      <ion-label>{{ selectedRating || 'Select Rating' }}</ion-label>
+      <ion-icon name="chevron-down"></ion-icon>
+    </ion-chip>
+
+    <ion-chip
+      *ngIf="activeFilter === 'status'"
+      outline
+      (click)="selectStatus()"
+    >
+      <ion-label>{{ selectedStatus || 'Select Status' }}</ion-label>
+      <ion-icon name="chevron-down"></ion-icon>
+    </ion-chip>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading reviews...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && filteredReviews.length === 0" class="empty-state">
+    <ion-icon name="chatbubbles-outline"></ion-icon>
+    <h3>No Reviews Found</h3>
+    <p *ngIf="isFiltered">Try adjusting your filters</p>
+    <p *ngIf="!isFiltered">Customer reviews will appear here</p>
+  </div>
+
+  <!-- Review Cards -->
+  <div *ngIf="!loading && filteredReviews.length > 0">
+    <ion-card
+      *ngFor="let review of filteredReviews"
+      class="review-card"
+      [ngClass]="'status-' + review.status"
+    >
+      <ion-card-header>
+        <ion-card-title>{{ review.productName }}</ion-card-title>
+        <ion-card-subtitle>
+          <div class="review-meta">
+            <div class="rating">
+              <ion-icon
+                name="star"
+                *ngFor="let star of [1,2,3,4,5]"
+                [color]="star <= review.rating ? 'warning' : 'medium'"
+              ></ion-icon>
+              <span class="rating-value">{{ review.rating }}/5</span>
+            </div>
+            <ion-badge [color]="getStatusColor(review.status)">
+              {{ review.status }}
+            </ion-badge>
+            <span class="date">{{ formatDate(review.date) }}</span>
+          </div>
+          <div class="product-id">
+            <ion-icon name="barcode-outline"></ion-icon>
+            {{ review.productId }}
+          </div>
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="review-content">
+          <p class="review-text">{{ review.content }}</p>
+          <p class="review-author">
+            <ion-icon name="person-circle-outline"></ion-icon>
+            {{ review.userName }} ({{ review.userEmail }})
+          </p>
+
+          <!-- Messages Section -->
+          <div class="messages-section">
+            <ion-label>Conversation (Review ID: {{ review.id }})</ion-label>
+
+            <!-- Loading Messages -->
+            <div *ngIf="review.loadingMessages" class="message-loading">
+              <ion-spinner name="lines"></ion-spinner>
+              <span>Loading messages...</span>
+            </div>
+
+            <!-- No Messages -->
+            <div
+              *ngIf="!review.loadingMessages && review.messages?.length === 0"
+              class="no-messages"
+            >
+              No messages yet for this review
+            </div>
+
+            <!-- Messages -->
+            <div
+              *ngFor="let message of review.messages"
+              class="message"
+              [ngClass]="{ 'admin-message': message.fromAdmin }"
+            >
+              <div class="message-header">
+                <ion-icon
+                  [name]="message.fromAdmin ? 'shield-checkmark' : 'person'"
+                ></ion-icon>
+                <span>{{ message.fromAdmin ? 'Admin' : review.userName }}</span>
+                <span class="message-date">{{ formatDate(message.date) }}</span>
+              </div>
+              <div class="message-content">{{ message.text }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons" *ngIf="isAdmin">
+          <ion-button
+            fill="clear"
+            color="success"
+            (click)="approveReview(review.id)"
+          >
+            <ion-icon slot="start" name="checkmark-circle"></ion-icon>
+            Approve
+          </ion-button>
+          <ion-button
+            fill="clear"
+            color="danger"
+            (click)="rejectReview(review.id)"
+          >
+            <ion-icon slot="start" name="close-circle"></ion-icon>
+            Reject
+          </ion-button>
+          <ion-button
+            fill="clear"
+            color="primary"
+            (click)="openReplyModal(review)"
+          >
+            <ion-icon slot="start" name="mail-open"></ion-icon>
+            Reply
+          </ion-button>
+          <ion-button
+            fill="clear"
+            color="medium"
+            (click)="deleteReview(review.id)"
+          >
+            <ion-icon slot="start" name="trash"></ion-icon>
+            Delete
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

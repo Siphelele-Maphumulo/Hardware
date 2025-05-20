@@ -1,0 +1,92 @@
+.review-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.review-header h2 {
+  color: var(--ion-color-primary);
+  font-weight: bold;
+}
+
+.product-card {
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.product-info {
+  display: flex;
+  align-items: center;
+}
+
+.product-info ion-thumbnail {
+  width: 80px;
+  height: 80px;
+  margin-right: 16px;
+}
+
+.product-details {
+  flex: 1;
+}
+
+.review-form {
+  border-radius: 12px;
+}
+
+.rating-section {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.stars {
+  font-size: 32px;
+  margin: 12px 0;
+}
+
+.stars ion-icon {
+  margin: 0 4px;
+  cursor: pointer;
+}
+
+.photo-upload {
+  margin: 20px 0;
+}
+
+.photo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.photo-box {
+  width: 100px;
+  height: 100px;
+  border: 1px dashed var(--ion-color-medium);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.add-photo {
+  flex-direction: column;
+  color: var(--ion-color-medium);
+  cursor: pointer;
+}
+
+.add-photo ion-icon {
+  font-size: 24px;
+}
+
+.add-photo p {
+  margin: 0;
+  font-size: 12px;
+}

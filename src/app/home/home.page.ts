@@ -6,11 +6,12 @@ import {
   LoadingController,
   NavController,
 } from '@ionic/angular';
-import { profile } from 'console';
 import { User } from 'firebase/auth';
 import { ApiService } from '../api.service';
 import { AuthenticationServiceService } from '../authentication-service.service';
 import { FireserviceService } from '../fireservice.service';
+import { ModalController } from '@ionic/angular';
+import { ManagementSidebarComponent } from 'src/app/components/management-sidebar/management-sidebar.component';
 
 @Component({
   selector: 'app-home',
@@ -18,58 +19,58 @@ import { FireserviceService } from '../fireservice.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  value: string;
-  data: any;
-  name: any;
-  surname: any;
-  username: any;
-  email: any;
-  contact: any;
-  password: any;
-  customers: any = {}; // This should be an object, not an array
-
-  count;
-
+  // User data properties
   user = {} as User;
+  customers: any = {};
+  email: string | null = null;
+  me: string = '';
 
-  data1: string[];
-  userDis: string;
-  userPass: string;
-
+  // UI state properties
+  isManagementOpen = false; // Controls sidebar visibility
   type: boolean = true;
-  me: string;
+  count: number = 1;
 
-  customer: any;
+  // Form fields
+  value: string = '';
+  name: string = '';
+  surname: string = '';
+  username: string = '';
+  contact: string = '';
+  password: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private activate: ActivatedRoute,
     public _apiservice: ApiService,
     private toast: ToastController,
     public authService: AuthenticationServiceService,
     private load: LoadingController,
-    public ngFireAuth: AngularFireAuth,
+    private modalCtrl: ModalController,
     private navCtrl: NavController,
     public fireService: FireserviceService,
     private afAuth: AngularFireAuth
   ) {
-    this.route.queryParams.subscribe((params) => {
-      if (this.router.getCurrentNavigation().extras.state) {
-        this.data = this.router.getCurrentNavigation().extras.state.user;
-      }
-    });
-    this.getProfile();
+    this.initializeUserData();
   }
 
   ngOnInit() {
-    this.count = 1;
+    this.getProfile();
   }
+
+  private initializeUserData() {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.customers = navigation.extras.state['user'];
+      console.log('User details received:', this.customers);
+    }
+  }
+
+  // Navigation methods
   navigateWelcome() {
     this.router.navigate(['order']);
   }
 
-  navigateQoute() {
+  navigateQuote() {
     this.router.navigate(['cart']);
   }
 
@@ -77,41 +78,34 @@ export class HomePage implements OnInit {
     this.Logout();
   }
 
-  openDetailsWithState() {
-    const name = (document.getElementById('username') as HTMLInputElement)
-      .value;
-    const password = (document.getElementById('password') as HTMLInputElement)
-      .value;
-    this.data = [this.me];
-
-    const navigationExtras: NavigationExtras = {
-      state: {
-        user: this.data,
-      },
-    };
-    this.router.navigate(['home'], navigationExtras);
+  // Sidebar control methods
+  async toggleManagement() {
+    const modal = await this.modalCtrl.create({
+      component: ManagementSidebarComponent,
+      breakpoints: [0, 0.5, 0.9],
+      initialBreakpoint: 0.5,
+      showBackdrop: true,
+    });
+    await modal.present();
   }
 
-  showToaster(message: string) {
-    this.toast
-      .create({
-        message,
-        duration: 3000,
-      })
-      .then((toastData) => toastData.present());
+  closeSidebar() {
+    this.isManagementOpen = false;
   }
 
+  // User profile methods
   getProfile() {
     this.afAuth.authState.subscribe((user) => {
-      if (user && user.uid) {
+      if (user?.uid) {
+        this.email = user.email;
         this.fireService.getDetails({ uid: user.uid }).subscribe(
           (res: any) => {
             this.customers = res;
-            console.log('from Firestore ===', res);
+            console.log('User details from Firestore:', res);
           },
           (error: any) => {
-            alert('ERROR');
-            console.log('ERROR ===', error);
+            console.error('Error fetching user details:', error);
+            this.showErrorToast('Failed to load profile');
           }
         );
       } else {
@@ -120,17 +114,64 @@ export class HomePage implements OnInit {
     });
   }
 
-  warningToaster(message: string) {
-    this.toast
-      .create({
-        message,
-        color: 'danger',
-        duration: 4000,
-      })
-      .then((toastData) => toastData.present());
+  // Admin check
+  isAdmin(): boolean {
+    const adminEmails = ['Admin@gmail.com', 'siphelelemaphumulo@gmail.com'];
+    return this.email ? adminEmails.includes(this.email.toLowerCase()) : false;
   }
 
-  Logout() {
-    this.authService.Logout();
+  // Navigation to admin sections
+  navigateToAdminSection(section: string) {
+    this.router.navigate([`/management/${section}`]);
+    this.closeSidebar();
+  }
+
+  // Authentication methods
+  async Logout() {
+    try {
+      await this.authService.Logout();
+      this.navCtrl.navigateRoot('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+      this.showErrorToast('Logout failed');
+    }
+  }
+
+  // Toast helpers
+  private async showToast(
+    message: string,
+    color?: string,
+    duration: number = 3000
+  ) {
+    const toast = await this.toast.create({
+      message,
+      duration,
+      color: color || 'primary',
+      position: 'bottom',
+    });
+    await toast.present();
+  }
+
+  private showErrorToast(message: string) {
+    this.showToast(message, 'danger', 4000);
+  }
+
+  private showWarningToast(message: string) {
+    this.showToast(message, 'warning', 4000);
+  }
+
+  // Legacy methods (consider removing if unused)
+  openDetailsWithState() {
+    const navigationExtras: NavigationExtras = {
+      state: {
+        user: [this.me],
+      },
+    };
+    this.router.navigate(['home'], navigationExtras);
+  }
+
+  navigateToProducts() {
+    this.closeSidebar();
+    this.router.navigate(['/products']); // Correct route
   }
 }

@@ -1,0 +1,141 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Stock Analysis</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Summary Cards -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="4">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Total Products</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <h1>{{ summaryData.totalProducts }}</h1>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-md="6" size-lg="4">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Low Stock Items</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <h1>{{ summaryData.lowStockItems }}</h1>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-md="6" size-lg="4">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Best Selling</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <h2>{{ summaryData.topProduct?.title || 'N/A' }}</h2>
+            <p>Sold: {{ summaryData.topProduct?.sales || 0 }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Filter Controls -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Filters</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Time Range</ion-label>
+        <ion-select [(ngModel)]="timeRange" (ionChange)="applyFilters()">
+          <ion-select-option value="7">Last 7 Days</ion-select-option>
+          <ion-select-option value="30">Last 30 Days</ion-select-option>
+          <ion-select-option value="90">Last 90 Days</ion-select-option>
+          <ion-select-option value="all">All Time</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Category</ion-label>
+        <ion-select [(ngModel)]="selectedCategory" (ionChange)="applyFilters()">
+          <ion-select-option value="all">All Categories</ion-select-option>
+          <ion-select-option *ngFor="let cat of categories" [value]="cat">
+            {{ cat }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Stock Level Analysis -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Stock Levels</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div style="height: 300px">
+        <canvas #stockChart></canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Sales Performance -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Sales Performance</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div style="height: 300px">
+        <canvas #salesChart></canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Low Stock Items -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Low Stock Items (Below Average)</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let item of lowStockItems">
+          <ion-label>
+            <h3>{{ item.title }}</h3>
+            <p>Current Stock: {{ item.qty }}</p>
+            <p>Average: {{ averageStock | number:'1.0-0' }}</p>
+          </ion-label>
+          <ion-badge slot="end" [color]="getStockLevelColor(item.qty)">
+            {{ getStockLevelText(item.qty) }}
+          </ion-badge>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Top Selling Products -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Top Selling Products</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let product of topSellingProducts">
+          <ion-label>
+            <h3>{{ product.title }}</h3>
+            <p>Total Sold: {{ product.sales }}</p>
+            <p>Revenue: {{ product.revenue | currency:'ZAR':'symbol' }}</p>
+          </ion-label>
+          <ion-badge slot="end" color="success">
+            #{{ product.rank }}
+          </ion-badge>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
