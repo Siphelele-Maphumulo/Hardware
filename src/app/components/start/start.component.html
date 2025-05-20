@@ -1,13 +1,10 @@
-<ion-content class="start-page">
-  <div class="center-wrapper">
-    <ion-button
-      expand="block"
-      (click)="login()"
-      class="glass-btn"
-      shape="round"
-      aria-label="Get Started"
-    >
-      <span class="btn-content"> OPEN </span>
-    </ion-button>
+<div class="slide-container">
+  <div class="slider-track">
+    <div
+      class="slider-thumb"
+      (mousedown)="startSlide($event)"
+      (touchstart)="startSlide($event)"
+    ></div>
+    <span class="slide-text">Slide to Start</span>
   </div>
-</ion-content>
+</div>

@@ -244,3 +244,15 @@ ion-toolbar {
   --color: #fff;
   --background: #2196f3; // Blue background for info
 }
+
+ion-content.start-page {
+  --padding-bottom: 0;
+  --inner-padding-bottom: 0;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
