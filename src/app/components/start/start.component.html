@@ -1,10 +1,37 @@
-<div class="slide-container">
-  <div class="slider-track">
-    <div
-      class="slider-thumb"
-      (mousedown)="startSlide($event)"
-      (touchstart)="startSlide($event)"
-    ></div>
-    <span class="slide-text">Slide to Start</span>
+<div class="start-container">
+  <div *ngIf="showLoader" class="loader-container">
+    <div class="progress-container">
+      <div class="progress-bar" [style.width.%]="loaderProgress"></div>
+    </div>
+
+    <!-- Creative elements -->
+    <div class="creative-elements">
+      <div class="circles">
+        <div class="circle" *ngFor="let i of [1, 2, 3]"></div>
+      </div>
+
+      <div
+        class="signature"
+        *ngIf="signatureVisible"
+        [class.pulse]="pulseState"
+      >
+        Created by Siphelele Maphumulo
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!showLoader" class="slider-container">
+    <h1>UMLAZI HARDWARE</h1>
+    <p>Slide to continue</p>
+
+    <div class="slider-track">
+      <div
+        class="slider-thumb"
+        (mousedown)="startSlide($event)"
+        (touchstart)="startSlide($event)"
+      >
+        <svg><!-- arrow icon --></svg>
+      </div>
+    </div>
   </div>
 </div>
