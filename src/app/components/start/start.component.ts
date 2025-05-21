@@ -7,56 +7,68 @@ import { Router } from '@angular/router';
   styleUrls: ['./start.component.scss'],
 })
 export class StartComponent implements OnInit {
+  showLoader: boolean = true;
+  loaderProgress: number = 0;
+  signatureVisible: boolean = false;
+  pulseState: boolean = false;
 
-  constructor(
-    private rout: Router
-  ) { }
+  constructor(private rout: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.startLoader();
+    setInterval(() => {
+      this.pulseState = !this.pulseState;
+    }, 1500);
+  }
+
+  startLoader() {
+    const interval = setInterval(() => {
+      this.loaderProgress += 1;
+      if (this.loaderProgress === 50) this.signatureVisible = true;
+      if (this.loaderProgress >= 100) {
+        clearInterval(interval);
+        this.showLoader = false;
+      }
+    }, 50);
+  }
 
   login() {
     this.rout.navigate(['login']);
   }
 
-  startX: number = 0;
-sliderThumb: any;
-trackWidth: number = 0;
+  startSlide(event: any) {
+    event.preventDefault();
+    const sliderThumb = event.target.closest('.slider-thumb');
+    const track = document.querySelector('.slider-track') as HTMLElement;
+    const trackWidth = track.offsetWidth;
 
-startSlide(event: any) {
-  event.preventDefault();
-  this.sliderThumb = event.target.closest('.slider-thumb');
-  const track = document.querySelector('.slider-track') as HTMLElement;
-  this.trackWidth = track.offsetWidth;
+    const moveEvent = (e: any) => {
+      let clientX = e.clientX || e.touches[0].clientX;
+      let offset = clientX - track.getBoundingClientRect().left - 30;
+      offset = Math.max(0, Math.min(offset, trackWidth - 60));
+      sliderThumb.style.left = offset + 'px';
 
-  const moveEvent = (e: any) => {
-    let clientX = e.clientX || e.touches[0].clientX;
-    let offset = clientX - track.getBoundingClientRect().left - 30;
-    offset = Math.max(0, Math.min(offset, this.trackWidth - 60));
-    this.sliderThumb.style.left = offset + 'px';
+      if (offset >= trackWidth - 70) {
+        this.cleanupEvents(moveEvent, endEvent);
+        this.login();
+      }
+    };
 
-    if (offset >= this.trackWidth - 70) {
-      document.removeEventListener('mousemove', moveEvent);
-      document.removeEventListener('mouseup', endEvent);
-      document.removeEventListener('touchmove', moveEvent);
-      document.removeEventListener('touchend', endEvent);
-      this.login(); // call your login
-    }
-  };
+    const endEvent = () => {
+      sliderThumb.style.left = '0px';
+      this.cleanupEvents(moveEvent, endEvent);
+    };
 
-  const endEvent = () => {
-    this.sliderThumb.style.left = '0px';
+    document.addEventListener('mousemove', moveEvent);
+    document.addEventListener('mouseup', endEvent);
+    document.addEventListener('touchmove', moveEvent);
+    document.addEventListener('touchend', endEvent);
+  }
+
+  cleanupEvents(moveEvent: any, endEvent: any) {
     document.removeEventListener('mousemove', moveEvent);
     document.removeEventListener('mouseup', endEvent);
     document.removeEventListener('touchmove', moveEvent);
     document.removeEventListener('touchend', endEvent);
-  };
-
-  document.addEventListener('mousemove', moveEvent);
-  document.addEventListener('mouseup', endEvent);
-  document.addEventListener('touchmove', moveEvent);
-  document.addEventListener('touchend', endEvent);
-}
-
-
-
+  }
 }
